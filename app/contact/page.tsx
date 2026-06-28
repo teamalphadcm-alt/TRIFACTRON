@@ -10,7 +10,7 @@ const BLUE = "#3b82f6";
 // ─── Types ───────────────────────────────────────────────────────────────────
 
 interface Office {
-  flagComponent: JSX.Element;
+  flagComponent: ReactNode;
   country: string;
   city: string;
   address: string;
@@ -693,10 +693,10 @@ export default function ContactPage() {
                   <div style={{ fontSize: 13.5, color: "rgba(148,163,184,0.8)" }}>Monday – Friday</div>
                   <div style={{ fontSize: 17, fontWeight: 800, color: CYAN, marginTop: 2 }}>9:00 AM – 6:00 PM</div>
                   <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
-                    {([
+                    {[
                       { label: "IST", flag: <IndiaFlag /> },
                       { label: "CET", flag: <GermanyFlag /> },
-                    ] as { label: string; flag: JSX.Element }[]).map(({ label, flag }) => (
+                    ].map(({ label, flag }) => (
                       <span
                         key={label}
                         style={{

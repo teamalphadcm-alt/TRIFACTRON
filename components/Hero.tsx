@@ -149,7 +149,7 @@ function Counter({ to, suffix = "", duration = 2000 }: CounterProps) {
         if (entry.isIntersecting && !started.current) {
           started.current = true;
           const start = performance.now();
-          const tick = (now) => {
+          const tick = (now: DOMHighResTimeStamp) => {
             const pct = Math.min((now - start) / duration, 1);
             const ease = 1 - Math.pow(1 - pct, 3);
             setVal(Math.round(ease * to));
