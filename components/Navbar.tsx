@@ -39,9 +39,9 @@ export default function Navbar() {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             href="/contact"
-            className="bg-cyan-500 hover:bg-cyan-600 px-5 py-3 rounded-lg font-semibold transition"
+            className="bg-indigo-900 hover:bg-indigo-950 px-5 py-3 rounded-lg font-semibold transition"
           >
-            Contact
+            Join Now
           </motion.a>
         </nav>
 
