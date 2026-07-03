@@ -932,9 +932,7 @@ export default function Hero() {
                 playsInline
                 className="w-full h-auto block"
               />
-              <div className="absolute bottom-3 left-1/2 -translate-x-1/2 text-[10px] font-display font-semibold tracking-widest text-cyan-400/60 uppercase whitespace-nowrap">
-                Robotic Cell — Active
-              </div>
+           
             </div>
           </motion.div>
 
