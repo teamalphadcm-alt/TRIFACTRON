@@ -2,7 +2,7 @@
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, ArrowUpRight, Cpu, BrainCircuit, Factory, Zap, Shield, TrendingUp, Activity, LucideIcon } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Cpu, BrainCircuit, Factory, Zap, Shield, TrendingUp, Activity, Bot, Cog, LucideIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 /* ─── Neural Node Canvas ──────────────────────────────────────────────── */
@@ -128,6 +128,166 @@ function NeuralCanvas() {
       className="w-full h-full"
       style={{ display: "block" }}
     />
+  );
+}
+
+/* ─── Drifting Particle Field ─────────────────────────────────────────── */
+function ParticleField({ count = 14 }: { count?: number }) {
+  const [particles, setParticles] = useState<
+    { id: number; left: number; size: number; delay: number; duration: number }[]
+  >([]);
+
+  useEffect(() => {
+    setParticles(
+      Array.from({ length: count }, (_, i) => ({
+        id: i,
+        left: Math.random() * 100,
+        size: Math.random() * 2.5 + 1,
+        delay: Math.random() * 6,
+        duration: Math.random() * 8 + 10,
+      }))
+    );
+  }, [count]);
+
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+      {particles.map((p) => (
+        <motion.span
+          key={p.id}
+          className="absolute rounded-full bg-cyan-300"
+          style={{ left: `${p.left}%`, width: p.size, height: p.size, bottom: "-5%" }}
+          animate={{ y: ["0%", "-115vh"], opacity: [0, 0.7, 0.7, 0] }}
+          transition={{ duration: p.duration, delay: p.delay, repeat: Infinity, ease: "linear" }}
+        />
+      ))}
+    </div>
+  );
+}
+
+/* ─── Spinning Gears ──────────────────────────────────────────────────── */
+interface GearProps {
+  size: number;
+  duration: number;
+  reverse?: boolean;
+  color?: string;
+  glow?: string;
+  className?: string;
+}
+
+function Gear({ size, duration, reverse = false, color = "#00D4FF", glow, className = "" }: GearProps) {
+  return (
+    <motion.div
+      animate={{ rotate: reverse ? -360 : 360 }}
+      transition={{ duration, repeat: Infinity, ease: "linear" }}
+      className={className}
+      style={{
+        width: size,
+        height: size,
+        display: "inline-flex",
+        filter: glow ? `drop-shadow(0 0 ${Math.max(6, size * 0.12)}px ${glow})` : undefined,
+      }}
+    >
+      <Cog size={size} strokeWidth={1.2} style={{ color }} />
+    </motion.div>
+  );
+}
+
+function SpinningGearCluster({ className = "" }: { className?: string }) {
+  return (
+    <div className={`relative pointer-events-none select-none ${className}`} aria-hidden="true" style={{ width: 220, height: 220 }}>
+      {/* ambient glow field behind the cluster */}
+      <motion.div
+        className="absolute inset-0 rounded-full"
+        style={{ background: "radial-gradient(circle, rgba(0,212,255,0.16) 0%, rgba(0,212,255,0) 70%)" }}
+        animate={{ opacity: [0.5, 1, 0.5], scale: [0.92, 1.05, 0.92] }}
+        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+      />
+
+      {/* accent orbit ring */}
+      <div
+        className="absolute rounded-full"
+        style={{
+          top: "50%",
+          left: "50%",
+          width: 176,
+          height: 176,
+          transform: "translate(-50%, -50%)",
+          border: "1px dashed rgba(0,212,255,0.2)",
+        }}
+      />
+
+      {/* main gear */}
+      <div className="absolute top-0 left-2">
+        <Gear size={138} duration={12} color="rgba(0,212,255,0.55)" glow="rgba(0,212,255,0.35)" />
+      </div>
+
+      {/* secondary interlocking gear */}
+      <Gear
+        size={84}
+        duration={7.5}
+        reverse
+        color="rgba(129,140,248,0.6)"
+        glow="rgba(129,140,248,0.35)"
+        className="absolute bottom-0 right-0"
+      />
+
+      {/* small tertiary gear for depth */}
+      <Gear
+        size={40}
+        duration={5}
+        color="rgba(52,211,153,0.5)"
+        glow="rgba(52,211,153,0.3)"
+        className="absolute top-10 right-1"
+      />
+
+      {/* orbiting spark */}
+      <motion.span
+        className="absolute w-2 h-2 rounded-full bg-white"
+        style={{ top: "50%", left: "50%", boxShadow: "0 0 10px 2px rgba(0,212,255,0.8)" }}
+        animate={{
+          x: [0, 88, 0, -88, 0],
+          y: [-88, 0, 88, 0, -88],
+          opacity: [1, 0.6, 1, 0.6, 1],
+        }}
+        transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+      />
+    </div>
+  );
+}
+
+/* ─── Robot Buddy ─────────────────────────────────────────────────────── */
+function RobotBuddy({ className = "" }: { className?: string }) {
+  return (
+    <motion.div
+      className={`relative pointer-events-none select-none ${className}`}
+      aria-hidden="true"
+      animate={{ y: [0, -10, 0] }}
+      transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+    >
+      <div
+        className="flex items-center justify-center rounded-2xl"
+        style={{
+          width: 64,
+          height: 64,
+          background: "linear-gradient(135deg, rgba(0,212,255,0.16), rgba(59,130,246,0.10))",
+          border: "1px solid rgba(0,212,255,0.3)",
+          boxShadow: "0 8px 28px rgba(0,212,255,0.12)",
+        }}
+      >
+        <motion.div
+          animate={{ opacity: [1, 0.25, 1] }}
+          transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <Bot size={30} strokeWidth={1.6} className="text-cyan-300" />
+        </motion.div>
+      </div>
+      {/* antenna blip */}
+      <motion.span
+        className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-cyan-300"
+        animate={{ opacity: [1, 0.15, 1], scale: [1, 1.4, 1] }}
+        transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+      />
+    </motion.div>
   );
 }
 
@@ -317,6 +477,10 @@ export default function Hero() {
           50% { opacity: 0.2; }
         }
         .blink { animation: blink 1.8s ease-in-out infinite; }
+
+        @media (prefers-reduced-motion: reduce) {
+          .float, .float-delay, .blink, .scan-line { animation: none !important; }
+        }
       `}</style>
 
       {/* ── HERO ─────────────────────────────────────────────── */}
@@ -341,6 +505,12 @@ export default function Hero() {
             className="scan-line absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-400/30 to-transparent"
             style={{ top: 0 }}
           />
+          {/* Ambient gear cluster, background only, hidden on small screens */}
+          <div className="hidden lg:block absolute top-24 right-[8%] opacity-70">
+            <SpinningGearCluster />
+          </div>
+          {/* Drifting particles for ambient atmosphere */}
+          <ParticleField count={16} />
         </div>
 
         {/* Ticker */}
@@ -349,10 +519,10 @@ export default function Hero() {
         {/* Main content */}
         <motion.div
           style={{ opacity: heroOpacity, y: heroY }}
-          className="relative z-10 flex-1 max-w-[1400px] mx-auto w-full px-6 md:px-10 lg:px-16 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center py-20 lg:py-24"
+          className="relative z-10 flex-1 max-w-[1400px] mx-auto w-full px-6 md:px-10 lg:px-16 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center py-20 lg:py-24 text-center lg:text-center"
         >
           {/* Left column */}
-          <div>
+          <div className="flex flex-col items-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -369,7 +539,7 @@ export default function Hero() {
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.1 }}
-              className="font-display text-5xl sm:text-6xl lg:text-7xl xl:text-[82px] font-black leading-[1.0] tracking-tight text-balance"
+              className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[82px] font-black leading-[1.05] tracking-tight text-balance text-center"
             >
               <span className="text-white">Where</span>
               <br />
@@ -392,7 +562,7 @@ export default function Hero() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.25 }}
-              className="mt-8 text-base lg:text-lg text-slate-400 leading-relaxed max-w-[480px] font-body"
+              className="mt-8 text-sm sm:text-base lg:text-lg text-slate-400 leading-relaxed max-w-[520px] mx-auto font-body text-center"
             >
               We build AI-powered predictive maintenance, embedded intelligence,
               and industrial automation systems for manufacturers who cannot
@@ -404,7 +574,7 @@ export default function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="mt-10 flex flex-wrap gap-4"
+              className="mt-10 flex flex-wrap gap-4 justify-center"
             >
               <Link
                 href="/services"
@@ -427,18 +597,18 @@ export default function Hero() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.6 }}
-              className="mt-14 pt-8 border-t border-white/8 grid grid-cols-3 gap-6"
+              className="mt-14 pt-8 border-t border-white/8 grid grid-cols-3 gap-4 sm:gap-6 w-full max-w-md mx-auto"
             >
               {[
                 { n: 340, s: "+", l: "Deployments" },
                 { n: 98, s: "%", l: "Uptime SLA" },
                 { n: 60, s: "M+", l: "Daily Events" },
               ].map((item, i) => (
-                <div key={i}>
-                  <div className="font-display text-2xl md:text-3xl font-black text-white">
+                <div key={i} className="text-center">
+                  <div className="font-display text-xl sm:text-2xl md:text-3xl font-black text-white">
                     <Counter to={item.n} suffix={item.s} />
                   </div>
-                  <div className="mt-1 text-xs text-slate-500 font-body tracking-wide">{item.l}</div>
+                  <div className="mt-1 text-[10px] sm:text-xs text-slate-500 font-body tracking-wide">{item.l}</div>
                 </div>
               ))}
             </motion.div>
@@ -449,7 +619,7 @@ export default function Hero() {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.9, delay: 0.2 }}
-            className="relative"
+            className="relative mx-auto w-full max-w-[520px]"
           >
             {/* Main card */}
             <div
@@ -473,7 +643,7 @@ export default function Hero() {
               </div>
 
               {/* Canvas */}
-              <div className="h-64 md:h-80 relative">
+              <div className="h-56 sm:h-64 md:h-80 relative">
                 <NeuralCanvas />
                 {/* Overlay labels */}
                 <div className="absolute top-4 left-4 text-[10px] font-display font-semibold tracking-widest text-cyan-400/50 uppercase">
@@ -481,6 +651,10 @@ export default function Hero() {
                 </div>
                 <div className="absolute bottom-4 right-4 text-[10px] font-display font-semibold tracking-widest text-slate-600 uppercase">
                   28 Nodes · Real-time
+                </div>
+                {/* Robot buddy riding inside the panel */}
+                <div className="absolute bottom-4 left-4">
+                  <RobotBuddy />
                 </div>
               </div>
 
@@ -491,9 +665,9 @@ export default function Hero() {
                   { label: "Inference", value: "3.2ms", color: "text-blue-400" },
                   { label: "Accuracy", value: "98.4%", color: "text-emerald-400" },
                 ].map((m, i) => (
-                  <div key={i} className="px-5 py-4 text-center">
-                    <div className={`font-display font-bold text-base ${m.color}`}>{m.value}</div>
-                    <div className="text-[10px] text-slate-600 mt-0.5 font-body tracking-wide uppercase">{m.label}</div>
+                  <div key={i} className="px-3 sm:px-5 py-4 text-center">
+                    <div className={`font-display font-bold text-sm sm:text-base ${m.color}`}>{m.value}</div>
+                    <div className="text-[9px] sm:text-[10px] text-slate-600 mt-0.5 font-body tracking-wide uppercase">{m.label}</div>
                   </div>
                 ))}
               </div>
@@ -504,7 +678,7 @@ export default function Hero() {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.8 }}
-              className="float-delay absolute -left-6 top-1/3 rounded-xl px-4 py-3 text-xs font-display font-bold text-emerald-400 flex items-center gap-2"
+              className="float-delay hidden sm:flex absolute -left-6 top-1/3 rounded-xl px-4 py-3 text-xs font-display font-bold text-emerald-400 items-center gap-2"
               style={{
                 background: "linear-gradient(135deg, rgba(16,30,22,0.95) 0%, rgba(6,9,15,0.98) 100%)",
                 border: "1px solid rgba(52,211,153,0.2)",
@@ -519,7 +693,7 @@ export default function Hero() {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 1 }}
-              className="float absolute -right-4 bottom-24 rounded-xl px-4 py-3 text-xs font-display font-bold text-cyan-300 flex items-center gap-2"
+              className="float hidden sm:flex absolute -right-4 bottom-24 rounded-xl px-4 py-3 text-xs font-display font-bold text-cyan-300 items-center gap-2"
               style={{
                 background: "linear-gradient(135deg, rgba(10,25,40,0.95) 0%, rgba(6,9,15,0.98) 100%)",
                 border: "1px solid rgba(0,212,255,0.2)",
@@ -535,11 +709,11 @@ export default function Hero() {
 
       {/* ── CLIENT LOGOS ──────────────────────────────────────── */}
       <section className="border-y border-white/6 py-10 bg-slate-950/50">
-        <div className="max-w-[1400px] mx-auto px-6 md:px-10 lg:px-16">
+        <div className="max-w-[1400px] mx-auto px-6 md:px-10 lg:px-16 text-center">
           <p className="text-center text-xs font-display font-semibold tracking-widest text-slate-600 uppercase mb-8">
             Trusted by Industrial Leaders
           </p>
-          <div className="flex flex-wrap justify-center items-center gap-x-14 gap-y-6">
+          <div className="flex flex-wrap justify-center items-center gap-x-10 sm:gap-x-14 gap-y-6">
             {clients.map((name, i) => (
               <motion.span
                 key={i}
@@ -547,7 +721,7 @@ export default function Hero() {
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.08 }}
-                className="font-display font-bold text-lg text-slate-700 hover:text-slate-400 transition-colors duration-300 cursor-default tracking-tight"
+                className="font-display font-bold text-base sm:text-lg text-slate-700 hover:text-slate-400 transition-colors duration-300 cursor-default tracking-tight"
               >
                 {name}
               </motion.span>
@@ -557,7 +731,7 @@ export default function Hero() {
       </section>
 
       {/* ── SERVICES ──────────────────────────────────────────── */}
-      <section className="py-28 lg:py-36 relative overflow-hidden">
+      <section className="py-24 lg:py-36 relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-1/2 left-0 w-96 h-96 rounded-full bg-cyan-500/4 blur-[100px] -translate-y-1/2" />
         </div>
@@ -569,12 +743,13 @@ export default function Hero() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.6 }}
-            className="max-w-2xl mb-16 lg:mb-20"
+            className="mb-16 lg:mb-20 flex flex-col items-center"
+            style={{ width: "100%", maxWidth: "640px", margin: "0 auto", textAlign: "center" }}
           >
             <div className="inline-flex items-center gap-2 rounded-full border border-cyan-400/20 bg-cyan-400/5 px-3.5 py-1.5 mb-5">
               <span className="text-xs font-display font-semibold text-cyan-400 tracking-widest uppercase">What We Build</span>
             </div>
-            <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-black leading-[1.1] tracking-tight text-white">
+            <h2 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black leading-[1.1] tracking-tight text-white" style={{ textAlign: "center", width: "100%" }}>
               Engineered for
               <span
                 className="block"
@@ -588,14 +763,14 @@ export default function Hero() {
                 Zero Tolerance
               </span>
             </h2>
-            <p className="mt-5 text-slate-400 font-body text-base lg:text-lg leading-relaxed">
+            <p className="mt-5 text-slate-400 font-body text-sm sm:text-base lg:text-lg leading-relaxed">
               Every system we deliver operates in environments where failure is not an option.
               We build with that constraint as our foundation, not an afterthought.
             </p>
           </motion.div>
 
           {/* Service grid */}
-          <div className="grid md:grid-cols-2 gap-5">
+          <div className="grid sm:grid-cols-2 gap-5">
             {services.map((svc, i) => {
               const Icon = svc.icon;
               return (
@@ -605,8 +780,9 @@ export default function Hero() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-60px" }}
                   transition={{ duration: 0.5, delay: i * 0.1 }}
+                  whileHover={{ y: -6 }}
                   onMouseEnter={() => setActiveService(i)}
-                  className="group relative rounded-2xl p-8 cursor-pointer transition-all duration-300"
+                  className="group relative rounded-2xl p-7 sm:p-8 cursor-pointer transition-all duration-300 flex flex-col items-center text-center"
                   style={{
                     background: activeService === i
                       ? "linear-gradient(135deg, rgba(0,212,255,0.06) 0%, rgba(59,130,246,0.04) 100%)"
@@ -617,7 +793,7 @@ export default function Hero() {
                     boxShadow: activeService === i ? "0 0 40px rgba(0,212,255,0.06)" : "none",
                   }}
                 >
-                  <div className="flex items-start justify-between mb-6">
+                  <div className="flex items-center justify-center mb-6">
                     <div
                       className="p-3 rounded-xl transition-colors duration-300"
                       style={{
@@ -632,22 +808,22 @@ export default function Hero() {
                         style={{ color: activeService === i ? "#00D4FF" : "#4B5E7A" }}
                       />
                     </div>
-                    <span
-                      className="text-xs font-display font-bold tracking-wider rounded-full px-3 py-1 transition-colors duration-300"
-                      style={{
-                        background: activeService === i ? "rgba(0,212,255,0.12)" : "rgba(255,255,255,0.04)",
-                        color: activeService === i ? "#00D4FF" : "#4B5E7A",
-                      }}
-                    >
-                      {svc.stat}
-                    </span>
                   </div>
-                  <h3 className="font-display font-bold text-xl text-white mb-3">{svc.label}</h3>
+                  <span
+                    className="text-xs font-display font-bold tracking-wider rounded-full px-3 py-1 mb-4 transition-colors duration-300"
+                    style={{
+                      background: activeService === i ? "rgba(0,212,255,0.12)" : "rgba(255,255,255,0.04)",
+                      color: activeService === i ? "#00D4FF" : "#4B5E7A",
+                    }}
+                  >
+                    {svc.stat}
+                  </span>
+                  <h3 className="font-display font-bold text-lg sm:text-xl text-white mb-3">{svc.label}</h3>
                   <p className="font-body text-sm text-slate-500 leading-relaxed group-hover:text-slate-400 transition-colors duration-300">
                     {svc.desc}
                   </p>
                   <div
-                    className="mt-6 flex items-center gap-2 text-xs font-display font-semibold tracking-wide transition-all duration-300"
+                    className="mt-6 flex items-center justify-center gap-2 text-xs font-display font-semibold tracking-wide transition-all duration-300"
                     style={{ color: activeService === i ? "#00D4FF" : "#334155" }}
                   >
                     Learn more
@@ -656,6 +832,13 @@ export default function Hero() {
                 </motion.div>
               );
             })}
+          </div>
+
+          {/* Decorative gear + robot strip */}
+          <div className="mt-16 flex items-center justify-center gap-10 opacity-90">
+            <Gear size={100} duration={9} color="rgba(0,212,255,0.45)" glow="rgba(0,212,255,0.3)" />
+            <RobotBuddy />
+            <Gear size={78} duration={6} reverse color="rgba(129,140,248,0.5)" glow="rgba(129,140,248,0.3)" />
           </div>
         </div>
       </section>
@@ -669,7 +852,7 @@ export default function Hero() {
           borderBottom: "1px solid rgba(0,212,255,0.08)",
         }}
       >
-        <div className="max-w-[1400px] mx-auto px-6 md:px-10 lg:px-16 grid grid-cols-2 lg:grid-cols-4 gap-10">
+        <div className="max-w-[1400px] mx-auto px-6 md:px-10 lg:px-16 grid grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 text-center">
           {stats.map((s, i) => (
             <motion.div
               key={i}
@@ -680,7 +863,7 @@ export default function Hero() {
               className="text-center"
             >
               <div
-                className="font-display text-4xl md:text-5xl font-black"
+                className="font-display text-3xl sm:text-4xl md:text-5xl font-black"
                 style={{
                   background: "linear-gradient(135deg, #00D4FF, #818CF8)",
                   WebkitBackgroundClip: "text",
@@ -690,32 +873,69 @@ export default function Hero() {
               >
                 <Counter to={s.value} suffix={s.suffix} />
               </div>
-              <div className="mt-2 text-sm text-slate-500 font-body tracking-wide">{s.label}</div>
+              <div className="mt-2 text-xs sm:text-sm text-slate-500 font-body tracking-wide">{s.label}</div>
             </motion.div>
           ))}
         </div>
       </section>
 
       {/* ── PROCESS ───────────────────────────────────────────── */}
-      <section className="py-28 lg:py-36">
-        <div className="max-w-[1400px] mx-auto px-6 md:px-10 lg:px-16">
+      <section className="py-24 lg:py-36 relative overflow-hidden">
+        <div className="hidden md:block absolute top-10 left-[4%] opacity-70">
+          <Gear size={120} duration={11} color="rgba(0,212,255,0.4)" glow="rgba(0,212,255,0.3)" />
+        </div>
+        <div className="hidden md:block absolute bottom-10 right-[4%] opacity-70">
+          <Gear size={96} duration={8} reverse color="rgba(129,140,248,0.45)" glow="rgba(129,140,248,0.3)" />
+        </div>
+
+        <div className="relative max-w-[1400px] mx-auto px-6 md:px-10 lg:px-16">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.6 }}
-            className="text-center max-w-2xl mx-auto mb-16 lg:mb-20"
+            className="mb-10 flex flex-col items-center"
+            style={{ width: "100%", maxWidth: "640px", margin: "0 auto", textAlign: "center" }}
           >
             <div className="inline-flex items-center gap-2 rounded-full border border-cyan-400/20 bg-cyan-400/5 px-3.5 py-1.5 mb-5">
               <span className="text-xs font-display font-semibold text-cyan-400 tracking-widest uppercase">How It Works</span>
             </div>
-            <h2 className="font-display text-4xl md:text-5xl font-black leading-[1.1] tracking-tight text-white">
+            <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-black leading-[1.1] tracking-tight text-white" style={{ textAlign: "center", width: "100%" }}>
               From Installation to Intelligence
             </h2>
-            <p className="mt-5 text-slate-400 font-body text-base leading-relaxed">
+            <p className="mt-5 text-slate-400 font-body text-sm sm:text-base leading-relaxed" style={{ textAlign: "center" }}>
               A structured engagement process that takes your facility from raw sensor data
               to operational AI in eight weeks, with zero production disruption.
             </p>
+          </motion.div>
+
+          {/* Robotic arm centerpiece */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="flex justify-center mb-16 lg:mb-20"
+          >
+            <div
+              className="relative rounded-2xl overflow-hidden w-full max-w-[420px]"
+              style={{
+                border: "1px solid rgba(0,212,255,0.2)",
+                boxShadow: "0 0 50px rgba(0,212,255,0.1), 0 30px 60px rgba(0,0,0,0.5)",
+              }}
+            >
+              <video
+                src="/tri.mp4"
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full h-auto block"
+              />
+              <div className="absolute bottom-3 left-1/2 -translate-x-1/2 text-[10px] font-display font-semibold tracking-widest text-cyan-400/60 uppercase whitespace-nowrap">
+                Robotic Cell — Active
+              </div>
+            </div>
           </motion.div>
 
           <div className="relative">
@@ -725,7 +945,7 @@ export default function Hero() {
               style={{ background: "linear-gradient(90deg, transparent, rgba(0,212,255,0.2), rgba(59,130,246,0.2), transparent)" }}
             />
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 text-center">
               {processSteps.map((step, i) => (
                 <motion.div
                   key={i}
@@ -733,18 +953,26 @@ export default function Hero() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-60px" }}
                   transition={{ duration: 0.5, delay: i * 0.12 }}
-                  className="relative"
+                  className="relative flex flex-col items-center text-center"
                 >
                   {/* Step number */}
-                  <div className="relative z-10 flex items-center justify-center w-[52px] h-[52px] rounded-full mb-6"
-                    style={{
-                      background: "linear-gradient(135deg, rgba(0,212,255,0.15), rgba(59,130,246,0.1))",
-                      border: "1px solid rgba(0,212,255,0.25)",
-                    }}
-                  >
-                    <span className="font-display font-black text-base text-cyan-400">
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
+                  <div className="relative flex items-center justify-center w-[52px] h-[52px] mb-6">
+                    <motion.span
+                      className="absolute inset-0 rounded-full"
+                      style={{ border: "1px solid rgba(0,212,255,0.35)" }}
+                      animate={{ scale: [1, 1.5, 1.5], opacity: [0.6, 0, 0] }}
+                      transition={{ duration: 2.6, repeat: Infinity, ease: "easeOut", delay: i * 0.4 }}
+                    />
+                    <div className="relative z-10 flex items-center justify-center w-full h-full rounded-full"
+                      style={{
+                        background: "linear-gradient(135deg, rgba(0,212,255,0.15), rgba(59,130,246,0.1))",
+                        border: "1px solid rgba(0,212,255,0.25)",
+                      }}
+                    >
+                      <span className="font-display font-black text-base text-cyan-400">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                    </div>
                   </div>
                   <h3 className="font-display font-bold text-lg text-white mb-3">{step.title}</h3>
                   <p className="font-body text-sm text-slate-500 leading-relaxed">{step.desc}</p>
@@ -762,7 +990,7 @@ export default function Hero() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="max-w-[1400px] mx-auto relative overflow-hidden rounded-3xl p-12 md:p-16 lg:p-20 text-center"
+          className="max-w-[1400px] mx-auto relative overflow-hidden rounded-3xl p-10 sm:p-12 md:p-16 lg:p-20 text-center"
           style={{
             background: "linear-gradient(135deg, rgba(0,212,255,0.08) 0%, rgba(59,130,246,0.06) 50%, rgba(129,140,248,0.06) 100%)",
             border: "1px solid rgba(0,212,255,0.15)",
@@ -773,14 +1001,18 @@ export default function Hero() {
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[200px] rounded-full bg-cyan-500/6 blur-[80px]" />
           </div>
 
-          <div className="relative">
+          <div className="relative flex flex-col items-center">
+            <div className="mb-4 flex items-center justify-center gap-4">
+              <RobotBuddy />
+              <Gear size={70} duration={7} color="rgba(0,212,255,0.5)" glow="rgba(0,212,255,0.3)" />
+            </div>
             <p className="font-display text-xs font-bold tracking-widest text-cyan-400 uppercase mb-4">
               Ready to Eliminate Downtime
             </p>
-            <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-black text-white leading-[1.15] mb-6 text-balance">
+            <h2 className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-white leading-[1.15] mb-6 text-balance">
               Your next unplanned outage<br />is the last one.
             </h2>
-            <p className="font-body text-slate-400 text-base max-w-lg mx-auto mb-10 leading-relaxed">
+            <p className="font-body text-slate-400 text-sm sm:text-base max-w-lg mx-auto mb-10 leading-relaxed">
               Talk to an industrial AI engineer about your specific environment.
               We scope every project individually — no templates, no off-the-shelf demos.
             </p>
