@@ -405,10 +405,10 @@ interface Stat {
 }
 
 const stats: Stat[] = [
-  { value: 340, suffix: "+", label: "Industrial Deployments" },
+  { value: 12, suffix: "+", label: "Industrial Deployments" },
   { value: 98, suffix: "%", label: "Uptime Guaranteed" },
   { value: 12, suffix: "ms", label: "Edge Latency" },
-  { value: 60, suffix: "M+", label: "Data Points Daily" },
+
 ];
 
 interface ProcessStep {
