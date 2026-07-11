@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { motion } from "framer-motion";
@@ -19,9 +20,19 @@ export default function Navbar() {
     <header className="fixed top-0 left-0 w-full z-50 border-b border-white/10 bg-[#030712]/90 backdrop-blur-lg">
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
 
-        <Link href="/" className="text-3xl font-bold tracking-wide">
-          <span className="text-white">TRI</span>
-          <span className="text-cyan-400">FACTRON</span>
+        <Link href="/" className="flex items-center gap-3">
+          <Image
+            src="/LOGO.jpeg"
+            alt="Trifactron logo"
+            width={44}
+            height={44}
+            className="rounded-md object-contain"
+            priority
+          />
+          <span className="text-3xl font-bold tracking-wide">
+            <span className="text-white">TRI</span>
+            <span className="text-cyan-400">FACTRON</span>
+          </span>
         </Link>
 
         <nav className="hidden md:flex items-center gap-10">
