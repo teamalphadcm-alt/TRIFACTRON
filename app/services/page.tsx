@@ -36,6 +36,8 @@ import {
   Bot,
   Code2,
   Target,
+  X,
+  Send,
 } from "lucide-react";
 
 // ─── Tokens ──────────────────────────────────────────────────────────────────
@@ -49,6 +51,8 @@ const C = {
   slate900: "#0f172a",
   slate950: "#020617",
 };
+
+const WHATSAPP_NUMBER = "4915511049025"; // +49 15511049025
 
 // ─── Hook: InView ─────────────────────────────────────────────────────────────
 
@@ -285,7 +289,16 @@ const PROCESS = [
 
 // ─── Training programs ────────────────────────────────────────────────────────
 
-const TRAINING = [
+interface TrainingProgram {
+  title: string;
+  duration: string;
+  level: string;
+  modules: string[];
+  image: string;
+  includes?: string;
+}
+
+const TRAINING: TrainingProgram[] = [
   {
     title: "PLC Programming",
     duration: "40 Hours",
@@ -294,11 +307,34 @@ const TRAINING = [
     level: "Beginner → Advanced",
   },
   {
-    title: "Embedded Systems & IoT",
-    duration: "40 Hours",
-    modules: ["ARM Cortex-M Firmware", "RTOS Fundamentals", "Industrial Protocols (Modbus, MQTT)", "Edge AI Deployment", "PCB Bring-up", "OTA Update Systems"],
+    title: "Embedded Systems — Basic Course",
+    duration: "3 Months",
+    modules: [
+      "Microcontroller Fundamentals & Digital Logic",
+      "Arduino Sensor & Motor Interfacing",
+      "Bluetooth-Controlled Robotics (HC-05)",
+      "ESP32 Wi-Fi, BLE & IoT (HTTP/MQTT)",
+      "2 Hands-on Capstone Projects",
+      "Practical Assessment & Certification",
+    ],
     image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
-    level: "Intermediate → Expert",
+    level: "Beginner — No Experience Required",
+    includes: "Arduino Uno · ESP32",
+  },
+  {
+    title: "Embedded Systems — Advanced Course",
+    duration: "6 Months",
+    modules: [
+      "Register-Level Embedded C & ISRs",
+      "ARM7 (LPC2148) Architecture & Thumb Mode",
+      "UART / SPI / I2C Peripheral Interfacing",
+      "FreeRTOS: Tasks, Scheduling & Semaphores",
+      "ARM7 Capstone: Industrial Monitoring System",
+      "Practical Assessment & Certification",
+    ],
+    image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&q=80",
+    level: "Intermediate → Advanced",
+    includes: "8051 · ARM7 (LPC2148) · Embedded C",
   },
   {
     title: "Industry 4.0 Masterclass",
@@ -525,7 +561,7 @@ function ProcessStep({ step, index, total }: { step: typeof PROCESS[0]; index: n
 
 // ─── TrainingCard ─────────────────────────────────────────────────────────────
 
-function TrainingCard({ program, index }: { program: typeof TRAINING[0]; index: number }) {
+function TrainingCard({ program, index, onEnrol }: { program: TrainingProgram; index: number; onEnrol: (program: TrainingProgram) => void }) {
   const [hovered, setHovered] = useState(false);
   return (
     <FadeIn dir="up" delay={index * 130}>
@@ -539,6 +575,9 @@ function TrainingCard({ program, index }: { program: typeof TRAINING[0]; index: 
           transform: hovered ? "translateY(-6px)" : "none",
           transition: "all 0.35s cubic-bezier(.22,1,.36,1)",
           boxShadow: hovered ? "0 20px 56px rgba(0,0,0,0.4)" : "0 4px 20px rgba(0,0,0,0.2)",
+          display: "flex",
+          flexDirection: "column",
+          height: "100%",
         }}
       >
         {/* Image */}
@@ -558,7 +597,7 @@ function TrainingCard({ program, index }: { program: typeof TRAINING[0]; index: 
             background: "linear-gradient(to bottom, transparent, rgba(15,23,42,0.9))",
           }} />
           <div style={{
-            position: "absolute", bottom: 16, left: 20,
+            position: "absolute", bottom: 16, left: 20, right: 100,
           }}>
             <div style={{
               fontSize: 11, fontWeight: 700, color: C.cyan,
@@ -566,7 +605,7 @@ function TrainingCard({ program, index }: { program: typeof TRAINING[0]; index: 
             }}>
               {program.level}
             </div>
-            <div style={{ fontSize: 20, fontWeight: 900, color: "#f1f5f9" }}>{program.title}</div>
+            <div style={{ fontSize: 20, fontWeight: 900, color: "#f1f5f9", lineHeight: 1.15 }}>{program.title}</div>
           </div>
           <div style={{
             position: "absolute", top: 16, right: 16,
@@ -582,11 +621,26 @@ function TrainingCard({ program, index }: { program: typeof TRAINING[0]; index: 
         </div>
 
         {/* Modules */}
-        <div style={{ padding: "24px 24px 28px" }}>
+        <div style={{ padding: "24px 24px 28px", flex: 1, display: "flex", flexDirection: "column" }}>
+          {program.includes && (
+            <div style={{
+              display: "inline-flex", alignSelf: "flex-start",
+              alignItems: "center", gap: 6,
+              padding: "5px 12px", borderRadius: 999, marginBottom: 16,
+              background: "rgba(255,255,255,0.04)",
+              border: "1px solid rgba(255,255,255,0.09)",
+              fontSize: 11.5, fontWeight: 600, color: "rgba(203,213,225,0.75)",
+              letterSpacing: "0.02em",
+            }}>
+              <Cpu size={12} color={C.cyan} />
+              {program.includes}
+            </div>
+          )}
+
           <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(148,163,184,0.5)", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 14 }}>
             Curriculum
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px 12px" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px 12px", flex: 1 }}>
             {program.modules.map((m) => (
               <div key={m} style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, color: "rgba(203,213,225,0.8)" }}>
                 <div style={{ width: 5, height: 5, borderRadius: "50%", background: C.cyan, flexShrink: 0 }} />
@@ -595,7 +649,9 @@ function TrainingCard({ program, index }: { program: typeof TRAINING[0]; index: 
             ))}
           </div>
 
-          <button style={{
+          <button
+            onClick={() => onEnrol(program)}
+            style={{
             marginTop: 24, width: "100%", height: 46, borderRadius: 12,
             border: `1px solid ${hovered ? C.cyan : "rgba(34,211,238,0.3)"}`,
             background: hovered ? "rgba(34,211,238,0.1)" : "transparent",
@@ -665,9 +721,240 @@ function TechCategoryBlock({ group, index }: { group: TechCategory; index: numbe
   );
 }
 
+// ─── EnrolModal ─────────────────────────────────────────────────────────────
+
+interface EnrolModalProps {
+  program: TrainingProgram | null;
+  onClose: () => void;
+}
+
+function EnrolModal({ program, onClose }: EnrolModalProps) {
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [batch, setBatch] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const open = !!program;
+
+  useEffect(() => {
+    if (open) {
+      setName(""); setPhone(""); setEmail(""); setBatch("");
+      setSubmitting(false);
+      const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+      window.addEventListener("keydown", onKey);
+      return () => window.removeEventListener("keydown", onKey);
+    }
+  }, [open, program]);
+
+  if (!open || !program) return null;
+
+  const canSubmit = name.trim().length > 1 && phone.trim().length > 5;
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!canSubmit) return;
+    setSubmitting(true);
+
+    const lines = [
+      `New enrolment request`,
+      ``,
+      `Course: ${program.title}`,
+      `Duration: ${program.duration}`,
+      `Name: ${name.trim()}`,
+      `Phone: ${phone.trim()}`,
+      email.trim() ? `Email: ${email.trim()}` : null,
+      batch.trim() ? `Preferred batch: ${batch.trim()}` : null,
+    ].filter(Boolean);
+
+    const message = lines.join("\n");
+    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+
+    window.open(url, "_blank", "noopener,noreferrer");
+
+    setTimeout(() => {
+      setSubmitting(false);
+      onClose();
+    }, 400);
+  };
+
+  const inputStyle: CSSProperties = {
+    width: "100%",
+    height: 48,
+    borderRadius: 12,
+    border: "1px solid rgba(255,255,255,0.1)",
+    background: "rgba(255,255,255,0.03)",
+    color: "#f1f5f9",
+    fontSize: 14.5,
+    padding: "0 16px",
+    fontFamily: "inherit",
+    outline: "none",
+    transition: "border-color 0.2s, background 0.2s",
+    boxSizing: "border-box",
+  };
+
+  const labelStyle: CSSProperties = {
+    display: "block",
+    fontSize: 12.5,
+    fontWeight: 700,
+    color: "rgba(148,163,184,0.7)",
+    letterSpacing: "0.04em",
+    textTransform: "uppercase",
+    marginBottom: 8,
+  };
+
+  return (
+    <div
+      onMouseDown={(e) => { if (e.target === e.currentTarget) onClose(); }}
+      style={{
+        position: "fixed", inset: 0, zIndex: 1000,
+        background: "rgba(2,6,23,0.75)",
+        backdropFilter: "blur(6px)",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        padding: 20,
+        animation: "enrolFadeIn 0.2s ease",
+      }}
+    >
+      <style>{`
+        @keyframes enrolFadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes enrolPopIn { from { opacity: 0; transform: translateY(16px) scale(0.97); } to { opacity: 1; transform: none; } }
+        .enrol-input:focus { border-color: ${C.cyan} !important; background: rgba(34,211,238,0.06) !important; }
+      `}</style>
+
+      <div
+        style={{
+          width: "100%", maxWidth: 440,
+          borderRadius: 22,
+          border: "1px solid rgba(34,211,238,0.25)",
+          background: "linear-gradient(180deg, #0f1b30 0%, #0a1424 100%)",
+          boxShadow: "0 30px 90px rgba(0,0,0,0.55)",
+          padding: "22px 26px 20px",
+          animation: "enrolPopIn 0.28s cubic-bezier(.22,1,.36,1)",
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 14 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 12, minWidth: 0 }}>
+            <img
+              src="/LOGO.jpeg"
+              alt="Trifactron logo"
+              style={{
+                width: 40, height: 40, borderRadius: 10, flexShrink: 0,
+                objectFit: "cover",
+                border: "1px solid rgba(34,211,238,0.3)",
+              }}
+            />
+            <div style={{ minWidth: 0 }}>
+              <div style={{ fontSize: 10.5, fontWeight: 700, color: C.cyan, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 3 }}>
+                Enrol now
+              </div>
+              <h3 style={{
+                fontSize: 17, fontWeight: 900, color: "#f1f5f9", margin: 0, lineHeight: 1.22,
+                overflow: "hidden", textOverflow: "ellipsis", display: "-webkit-box",
+                WebkitLineClamp: 2, WebkitBoxOrient: "vertical",
+              }}>
+                {program.title}
+              </h3>
+            </div>
+          </div>
+          <button
+            onClick={onClose}
+            aria-label="Close"
+            style={{
+              width: 32, height: 32, borderRadius: 9, flexShrink: 0,
+              border: "1px solid rgba(255,255,255,0.1)",
+              background: "rgba(255,255,255,0.04)",
+              color: "rgba(203,213,225,0.8)",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              cursor: "pointer",
+            }}
+          >
+            <X size={15} />
+          </button>
+        </div>
+
+        <form onSubmit={handleSubmit}>
+          <div style={{ marginBottom: 12 }}>
+            <label style={labelStyle} htmlFor="enrol-name">Full name *</label>
+            <input
+              id="enrol-name"
+              className="enrol-input"
+              style={inputStyle}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Jane Müller"
+              required
+            />
+          </div>
+
+          <div style={{ marginBottom: 12 }}>
+            <label style={labelStyle} htmlFor="enrol-phone">WhatsApp / phone number *</label>
+            <input
+              id="enrol-phone"
+              className="enrol-input"
+              style={inputStyle}
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              placeholder="+49 151 234 5678"
+              required
+            />
+          </div>
+
+          <div style={{ marginBottom: 12 }}>
+            <label style={labelStyle} htmlFor="enrol-email">Email (optional)</label>
+            <input
+              id="enrol-email"
+              className="enrol-input"
+              style={inputStyle}
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="jane@company.com"
+            />
+          </div>
+
+          <div style={{ marginBottom: 18 }}>
+            <label style={labelStyle} htmlFor="enrol-batch">Preferred batch (optional)</label>
+            <input
+              id="enrol-batch"
+              className="enrol-input"
+              style={inputStyle}
+              value={batch}
+              onChange={(e) => setBatch(e.target.value)}
+              placeholder="Weekday mornings, starting August"
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={!canSubmit || submitting}
+            style={{
+              width: "100%", height: 48, borderRadius: 13, border: "none",
+              background: canSubmit ? "linear-gradient(135deg, #25D366, #128C7E)" : "rgba(255,255,255,0.08)",
+              color: canSubmit ? "#fff" : "rgba(148,163,184,0.5)",
+              fontSize: 14.5, fontWeight: 800, cursor: canSubmit ? "pointer" : "not-allowed",
+              display: "flex", alignItems: "center", justifyContent: "center", gap: 10,
+              fontFamily: "inherit",
+              boxShadow: canSubmit ? "0 10px 30px rgba(37,211,102,0.3)" : "none",
+              transition: "all 0.2s ease",
+            }}
+          >
+            <Send size={16} />
+            {submitting ? "Opening WhatsApp…" : "Continue on WhatsApp"}
+          </button>
+
+          <div style={{ marginTop: 12, fontSize: 11.5, color: "rgba(148,163,184,0.5)", textAlign: "center" }}>
+            Sends to +49 155 1104 9025 · No spam, ever
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function ServicesPage() {
+
+  const [enrolProgram, setEnrolProgram] = useState<TrainingProgram | null>(null);
 
   // Animated background grid ref
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -1088,12 +1375,12 @@ export default function ServicesPage() {
               </span>
             </h2>
             <p style={{ fontSize: 17, color: "rgba(148,163,184,0.8)", maxWidth: 540, margin: "0 auto", lineHeight: 1.75 }}>
-              Hands-on programs taught by practicing engineers — on real PLC hardware and live industrial equipment, not just simulators.
+              Hands-on programs taught by practicing engineers — on real PLC and embedded hardware, not just simulators.
             </p>
           </FadeIn>
 
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%,340px),1fr))", gap: 28 }}>
-            {TRAINING.map((p, i) => <TrainingCard key={p.title} program={p} index={i} />)}
+            {TRAINING.map((p, i) => <TrainingCard key={p.title} program={p} index={i} onEnrol={setEnrolProgram} />)}
           </div>
 
           {/* Benefits bar */}
@@ -1240,6 +1527,8 @@ export default function ServicesPage() {
           </FadeIn>
         </div>
       </section>
+
+      <EnrolModal program={enrolProgram} onClose={() => setEnrolProgram(null)} />
 
     </div>
   );
