@@ -29,6 +29,13 @@ import {
   Radio,
   Layers,
   BookOpen,
+  CircuitBoard,
+  Move3d,
+  Radar,
+  MonitorCog,
+  Bot,
+  Code2,
+  Target,
 } from "lucide-react";
 
 // ─── Tokens ──────────────────────────────────────────────────────────────────
@@ -302,12 +309,54 @@ const TRAINING = [
   },
 ];
 
-// ─── Tech stack logos (SVG wordmarks replaced with styled text badges) ────────
+// ─── Tech stack — categorized ──────────────────────────────────────────────────
 
-const TECH = [
-  "Siemens TIA", "Beckhoff TwinCAT", "Allen-Bradley", "Schneider EcoStruxure",
-  "OPC-UA", "MQTT / Sparkplug", "AWS IoT", "Azure IoT Hub",
-  "Python / TensorFlow", "Node-RED", "InfluxDB", "Grafana",
+interface TechCategory {
+  Icon: React.ElementType;
+  category: string;
+  items: string[];
+}
+
+const TECH_CATEGORIES: TechCategory[] = [
+  {
+    Icon: CircuitBoard,
+    category: "PLC",
+    items: ["Mitsubishi", "Delta", "Siemens", "Omron", "ABB", "Keyence", "Schneider", "Allen-Bradley"],
+  },
+  {
+    Icon: Move3d,
+    category: "Motion Control",
+    items: ["Servo & Stepper Systems", "Pneumatic & Hydraulic Systems", "Induction Motors with VFDs"],
+  },
+  {
+    Icon: Radar,
+    category: "Communication",
+    items: ["Modbus", "Profinet", "CC-Link", "OPC-UA", "MQTT / Sparkplug"],
+  },
+  {
+    Icon: MonitorCog,
+    category: "HMI / SCADA",
+    items: ["GT Designer", "Vconn", "Woodtek HMI", "Wonderware InTouch", "Grafana"],
+  },
+  {
+    Icon: Bot,
+    category: "Robotics",
+    items: ["ABB", "FANUC (programming & simulation)"],
+  },
+  {
+    Icon: Code2,
+    category: "Software",
+    items: [
+      "GX Works", "TIA Portal", "Sysmac Studio", "WPL Soft", "CODESYS",
+      "CX Programmer", "RSLogix 500", "SolidWorks", "Arduino IDE", "EPLAN",
+      "Python / TensorFlow", "Node-RED", "InfluxDB",
+    ],
+  },
+  {
+    Icon: Target,
+    category: "Core Focus",
+    items: ["Industrial Control Systems", "Industrial IoT", "Robotics"],
+  },
 ];
 
 // ─── ServiceCard ──────────────────────────────────────────────────────────────
@@ -559,6 +608,57 @@ function TrainingCard({ program, index }: { program: typeof TRAINING[0]; index: 
             <BookOpen size={15} />
             Enrol now
           </button>
+        </div>
+      </div>
+    </FadeIn>
+  );
+}
+
+// ─── TechCategoryBlock ─────────────────────────────────────────────────────────
+
+function TechCategoryBlock({ group, index }: { group: TechCategory; index: number }) {
+  const { Icon } = group;
+  return (
+    <FadeIn dir="up" delay={index * 90}>
+      <div style={{
+        borderRadius: 20,
+        border: "1px solid rgba(255,255,255,0.08)",
+        background: "rgba(255,255,255,0.02)",
+        padding: "24px 26px",
+        height: "100%",
+      }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 18 }}>
+          <div style={{
+            width: 38, height: 38, borderRadius: 10, flexShrink: 0,
+            background: "rgba(34,211,238,0.1)",
+            border: "1px solid rgba(34,211,238,0.22)",
+            display: "flex", alignItems: "center", justifyContent: "center",
+          }}>
+            <Icon size={18} color={C.cyan} />
+          </div>
+          <div style={{
+            fontSize: 13, fontWeight: 800, color: "#f1f5f9",
+            letterSpacing: "0.06em", textTransform: "uppercase",
+          }}>
+            {group.category}
+          </div>
+        </div>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+          {group.items.map((t) => (
+            <div key={t} style={{
+              padding: "8px 14px", borderRadius: 999,
+              border: "1px solid rgba(255,255,255,0.09)",
+              background: "rgba(255,255,255,0.03)",
+              fontSize: 13, fontWeight: 600, color: "rgba(203,213,225,0.8)",
+              letterSpacing: "0.01em",
+              transition: "border-color 0.2s, color 0.2s, background 0.2s",
+            }}
+            onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.borderColor = "rgba(34,211,238,0.4)"; el.style.color = C.cyan; el.style.background = "rgba(34,211,238,0.07)"; }}
+            onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.borderColor = "rgba(255,255,255,0.09)"; el.style.color = "rgba(203,213,225,0.8)"; el.style.background = "rgba(255,255,255,0.03)"; }}
+            >
+              {t}
+            </div>
+          ))}
         </div>
       </div>
     </FadeIn>
@@ -1036,34 +1136,32 @@ export default function ServicesPage() {
       </section>
 
       {/* ══════════════════════════════════════════════════════════════
-          TECH STACK
+          TECH STACK — CATEGORIZED
       ══════════════════════════════════════════════════════════════ */}
-      <section style={{ padding: "80px 0 100px", background: C.slate950 }}>
+      <section style={{ padding: "100px 0 100px", background: C.slate950 }}>
         <div style={{ maxWidth: 1400, margin: "0 auto", padding: "0 24px" }}>
-          <FadeIn dir="up" style={{ textAlign: "center", marginBottom: 48 }}>
-            <div style={{ fontSize: 13, fontWeight: 700, color: "rgba(148,163,184,0.5)", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 8 }}>
-              Platforms & Technologies We Work With
-            </div>
+          <FadeIn dir="up" style={{ textAlign: "center", marginBottom: 56 }}>
+            <Chip><Cpu size={13} /> Platforms & Technologies</Chip>
+            <h2 style={{ fontSize: "clamp(32px,3.8vw,54px)", fontWeight: 900, letterSpacing: "-1.5px", margin: "0 0 16px", lineHeight: 1.1 }}>
+              What We Work{" "}
+              <span style={{ background: `linear-gradient(135deg, ${C.cyan}, ${C.blue})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                With
+              </span>
+            </h2>
+            <p style={{ fontSize: 16, color: "rgba(148,163,184,0.75)", maxWidth: 540, margin: "0 auto", lineHeight: 1.7 }}>
+              Multi-vendor expertise across PLCs, motion control, communication protocols, HMI/SCADA, robotics and engineering software.
+            </p>
           </FadeIn>
-          <FadeIn dir="up" delay={80}>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 12, justifyContent: "center" }}>
-              {TECH.map((t) => (
-                <div key={t} style={{
-                  padding: "10px 20px", borderRadius: 999,
-                  border: "1px solid rgba(255,255,255,0.09)",
-                  background: "rgba(255,255,255,0.03)",
-                  fontSize: 13.5, fontWeight: 600, color: "rgba(203,213,225,0.75)",
-                  letterSpacing: "0.02em",
-                  transition: "border-color 0.2s, color 0.2s, background 0.2s",
-                }}
-                onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.borderColor = "rgba(34,211,238,0.4)"; el.style.color = C.cyan; el.style.background = "rgba(34,211,238,0.07)"; }}
-                onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.borderColor = "rgba(255,255,255,0.09)"; el.style.color = "rgba(203,213,225,0.75)"; el.style.background = "rgba(255,255,255,0.03)"; }}
-                >
-                  {t}
-                </div>
-              ))}
-            </div>
-          </FadeIn>
+
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(min(100%,320px),1fr))",
+            gap: 22,
+          }}>
+            {TECH_CATEGORIES.map((group, i) => (
+              <TechCategoryBlock key={group.category} group={group} index={i} />
+            ))}
+          </div>
         </div>
       </section>
 
