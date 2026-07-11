@@ -600,9 +600,9 @@ export default function Hero() {
               className="mt-14 pt-8 border-t border-white/8 grid grid-cols-3 gap-4 sm:gap-6 w-full max-w-md mx-auto"
             >
               {[
-                { n: 340, s: "+", l: "Deployments" },
+                { n: 12, s: "+", l: "Deployments" },
                 { n: 98, s: "%", l: "Uptime SLA" },
-                { n: 60, s: "M+", l: "Daily Events" },
+               
               ].map((item, i) => (
                 <div key={i} className="text-center">
                   <div className="font-display text-xl sm:text-2xl md:text-3xl font-black text-white">
