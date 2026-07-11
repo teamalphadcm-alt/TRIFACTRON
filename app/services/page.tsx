@@ -480,27 +480,6 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
               </li>
             ))}
           </ul>
-
-          {/* CTA */}
-          <button
-            style={{
-              display: "flex", alignItems: "center", gap: 6,
-              background: "none", border: "none", padding: 0, cursor: "pointer",
-              color: hovered ? C.cyan : "rgba(148,163,184,0.7)",
-              fontSize: 14, fontWeight: 700, letterSpacing: "0.02em",
-              transition: "color 0.2s",
-              fontFamily: "inherit",
-            }}
-          >
-            Learn more
-            <ArrowRight
-              size={16}
-              style={{
-                transform: hovered ? "translateX(6px)" : "none",
-                transition: "transform 0.25s ease",
-              }}
-            />
-          </button>
         </div>
       </div>
     </FadeIn>
