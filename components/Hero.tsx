@@ -2,7 +2,7 @@
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, ArrowUpRight, Cpu, BrainCircuit, Factory, Zap, Shield, TrendingUp, Activity, Bot, Cog, LucideIcon } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Cpu, BrainCircuit, Factory, Zap, Shield, TrendingUp, Activity, Bot, Cog, MessageCircle, LucideIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 /* ─── Neural Node Canvas ──────────────────────────────────────────────── */
@@ -332,6 +332,59 @@ function Counter({ to, suffix = "", duration = 2000 }: CounterProps) {
   );
 }
 
+/* ─── WhatsApp Floating Button ────────────────────────────────────────── */
+function WhatsAppFloat() {
+  // +49 15511049025
+  const phoneNumber = "4915511049025";
+  const message = "Hi! I'd like to know more about your AI automation & training programs.";
+  const href = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+
+  return (
+    <motion.a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Chat with us on WhatsApp"
+      initial={{ opacity: 0, scale: 0.6, y: 20 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 1.2 }}
+      whileHover={{ scale: 1.08 }}
+      whileTap={{ scale: 0.95 }}
+      className="fixed z-50 bottom-6 right-6 sm:bottom-8 sm:right-8 flex items-center justify-center"
+      style={{ width: 60, height: 60 }}
+    >
+      {/* Pulse ring */}
+      <motion.span
+        className="absolute inset-0 rounded-full"
+        style={{ background: "rgba(37,211,102,0.45)" }}
+        animate={{ scale: [1, 1.6, 1.6], opacity: [0.6, 0, 0] }}
+        transition={{ duration: 2.2, repeat: Infinity, ease: "easeOut" }}
+      />
+      {/* Button */}
+      <div
+        className="relative flex items-center justify-center w-full h-full rounded-full"
+        style={{
+          background: "linear-gradient(135deg, #25D366 0%, #1EBE57 100%)",
+          boxShadow: "0 8px 28px rgba(37,211,102,0.45), 0 0 0 1px rgba(255,255,255,0.08)",
+        }}
+      >
+        <MessageCircle size={28} strokeWidth={2} className="text-white" fill="white" fillOpacity={0.08} />
+      </div>
+
+      {/* Tooltip label, desktop only */}
+      <span
+        className="hidden md:block absolute right-full mr-3 whitespace-nowrap rounded-lg px-3 py-2 text-xs font-display font-semibold text-white opacity-0 hover:opacity-100 transition-opacity duration-200 pointer-events-none"
+        style={{
+          background: "rgba(6,9,15,0.95)",
+          border: "1px solid rgba(37,211,102,0.3)",
+        }}
+      >
+        Chat on WhatsApp
+      </span>
+    </motion.a>
+  );
+}
+
 /* ─── Ticker ──────────────────────────────────────────────────────────── */
 const tickerItems = [
   "Predictive Maintenance",
@@ -396,19 +449,6 @@ const services: Service[] = [
     desc: "IEC 61508 and ISO 13849 compliant systems. We design fail-safe architectures for hazardous industrial environments where reliability is non-negotiable.",
     stat: "SIL 3 rated",
   },
-];
-
-interface Stat {
-  value: number;
-  suffix: string;
-  label: string;
-}
-
-const stats: Stat[] = [
-  { value: 12, suffix: "+", label: "Industrial Deployments" },
-  { value: 98, suffix: "%", label: "Uptime Guaranteed" },
-  { value: 12, suffix: "ms", label: "Edge Latency" },
-
 ];
 
 interface ProcessStep {
@@ -480,6 +520,22 @@ export default function Hero() {
 
         @media (prefers-reduced-motion: reduce) {
           .float, .float-delay, .blink, .scan-line { animation: none !important; }
+        }
+
+        .seo-card {
+          transition: border-color 0.35s ease, box-shadow 0.35s ease, background 0.35s ease, transform 0.35s ease;
+        }
+        .seo-card:hover {
+          border-color: rgba(255, 200, 0, 0.5) !important;
+          box-shadow: 0 0 45px rgba(255, 200, 0, 0.14), 0 22px 45px rgba(0,0,0,0.35) !important;
+          background: linear-gradient(135deg, rgba(255, 200, 0, 0.07) 0%, rgba(13,21,32,0.7) 100%) !important;
+        }
+        .seo-card:hover .seo-card-title {
+          color: #FFD84D !important;
+        }
+        .seo-card:hover .seo-card-bar {
+          background: linear-gradient(90deg, #FFD84D, #FFB800) !important;
+          box-shadow: 0 0 12px rgba(255, 200, 0, 0.5);
         }
       `}</style>
 
@@ -843,41 +899,6 @@ export default function Hero() {
         </div>
       </section>
 
-      {/* ── STATS BAND ────────────────────────────────────────── */}
-      <section
-        className="py-20 relative overflow-hidden"
-        style={{
-          background: "linear-gradient(135deg, rgba(0,212,255,0.04) 0%, rgba(59,130,246,0.04) 100%)",
-          borderTop: "1px solid rgba(0,212,255,0.08)",
-          borderBottom: "1px solid rgba(0,212,255,0.08)",
-        }}
-      >
-        <div className="max-w-[1400px] mx-auto px-6 md:px-10 lg:px-16 grid grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 text-center">
-          {stats.map((s, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className="text-center"
-            >
-              <div
-                className="font-display text-3xl sm:text-4xl md:text-5xl font-black"
-                style={{
-                  background: "linear-gradient(135deg, #00D4FF, #818CF8)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
-                }}
-              >
-                <Counter to={s.value} suffix={s.suffix} />
-              </div>
-              <div className="mt-2 text-xs sm:text-sm text-slate-500 font-body tracking-wide">{s.label}</div>
-            </motion.div>
-          ))}
-        </div>
-      </section>
 
       {/* ── PROCESS ───────────────────────────────────────────── */}
       <section className="py-24 lg:py-36 relative overflow-hidden">
@@ -1032,6 +1053,102 @@ export default function Hero() {
           </div>
         </motion.div>
       </section>
+
+      {/* ── SEO CONTENT ───────────────────────────────────────── */}
+      <section className="py-24 lg:py-32 relative overflow-hidden border-t border-white/6" style={{ width: "100%" }}>
+        <div
+          className="relative px-6 md:px-10 lg:px-16"
+          style={{ width: "100%", maxWidth: 1100, marginLeft: "auto", marginRight: "auto", boxSizing: "border-box" }}
+        >
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.6 }}
+            className="mb-14 flex flex-col items-center text-center"
+            style={{ width: "100%" }}
+          >
+            <div className="inline-flex items-center gap-2 rounded-full border border-cyan-400/20 bg-cyan-400/5 px-3.5 py-1.5 mb-5">
+              <span className="text-xs font-display font-semibold text-cyan-400 tracking-widest uppercase">Learn With Us</span>
+            </div>
+            <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-black leading-[1.1] tracking-tight text-white text-center">
+              AI Automation & Embedded Systems Training
+              <span
+                className="block"
+                style={{
+                  background: "linear-gradient(135deg, #00D4FF, #3B82F6)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                }}
+              >
+                For Industry 4.0 to 5.0
+              </span>
+            </h2>
+          </motion.div>
+
+          <div
+            className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8"
+            style={{ width: "100%" }}
+          >
+            {[
+              {
+                title: "AI Automation Training",
+                body: "Our AI automation courses take students from the fundamentals of machine learning to deploying real predictive-maintenance and computer-vision models on live industrial hardware. Every module is built around problems manufacturers actually pay to solve — anomaly detection, quality inspection, and process optimization — so graduates leave with a portfolio, not just a certificate.",
+              },
+              {
+                title: "Embedded Systems for Industrial AI",
+                body: "Embedded systems are the bridge between AI models and the physical world. Students learn microcontroller programming, sensor integration, real-time operating systems, and how to compile and deploy trained models onto edge devices — the same edge-AI stack used in modern smart factories.",
+              },
+              {
+                title: "Industry 4.0 to Industry 5.0: The Transition",
+                body: "Industry 4.0 connected machines to data. Industry 5.0 puts humans back at the center of that data-driven factory — collaborative robots, adaptive workflows, and AI systems designed to support operators rather than replace them. Our curriculum walks students through this shift step by step, from IIoT basics through to human-centric automation design.",
+              },
+              {
+                title: "Training for Students in Germany & Kerala",
+                body: "Engineering and technical students in Germany get access to German-standard industrial training — practical, compliance-aware, and aligned with what local manufacturers look for in graduates and working students. For students in Kerala, the same German-engineered curriculum is delivered online at a fraction of the cost of studying abroad — no relocation required, mentorship from engineers with real industrial project experience, and a certificate that speaks to international standards.",
+              },
+              {
+                title: "Affordable Online Courses",
+                body: "Studying AI automation and embedded systems shouldn't require an expensive campus or relocation. Our courses are live and self-paced, project-based, and priced for students — among the most affordable AI automation and embedded systems courses available online, with instalment options and student discounts. Every course ends in a deployable mini-project and a completion certificate recognized for internships and entry-level industrial roles.",
+                span: true,
+              },
+            ].map((block, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.6, delay: i * 0.08, ease: "easeOut" }}
+                whileHover={{ y: -6 }}
+                className={`seo-card flex flex-col items-center text-center rounded-2xl p-7 sm:p-8 ${block.span ? "lg:col-span-2" : ""}`}
+                style={{
+                  background: "rgba(13,21,32,0.6)",
+                  border: "1px solid rgba(255,255,255,0.07)",
+                }}
+              >
+                <h3 className="seo-card-title font-display font-bold text-xl sm:text-2xl text-white text-center transition-colors duration-300">
+                  {block.title}
+                </h3>
+                <motion.span
+                  className="seo-card-bar block h-[2px] rounded-full mt-3 mb-5"
+                  style={{ background: "linear-gradient(90deg, #00D4FF, #818CF8)" }}
+                  initial={{ width: 0 }}
+                  whileInView={{ width: 64 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: i * 0.08 + 0.2 }}
+                />
+                <p className="font-body text-sm sm:text-base text-slate-400 leading-relaxed text-center">
+                  {block.body}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── WHATSAPP FLOATING BUTTON ──────────────────────────── */}
+      <WhatsAppFloat />
 
     </div>
   );
