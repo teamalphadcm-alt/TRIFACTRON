@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import { Mail, Phone, MapPin } from "lucide-react";
 
 /* ─── Data ────────────────────────────────────────────────────────────── */
@@ -13,10 +14,33 @@ const quickLinks = [
 ];
 
 const contactItems = [
-  { icon: Mail,  value: "info@trifactron.com",   href: "mailto:info@trifactron.com" },
-  { icon: Phone, value: "+91 484 000 0000",        href: "tel:+914840000000" },
-  { icon: MapPin,value: "Kerala, India",           href: null },
-  { icon: MapPin,value: "Karlsruhe, Germany",      href: null },
+  {
+    icon: Mail,
+    value: "info@trifactron.com",
+    href: "mailto:info@trifactron.com",
+  },
+  {
+    icon: Phone,
+    value: "+91 89439 58370",
+    sublabel: "India",
+    href: "tel:+918943958370",
+  },
+  {
+    icon: Phone,
+    value: "+49 15511049025",
+    sublabel: "Germany",
+    href: "tel:+4915511049025",
+  },
+  {
+    icon: MapPin,
+    value: "Kulapully, Shoranur, Palakkad, Kerala, India 679122",
+    href: null,
+  },
+  {
+    icon: MapPin,
+    value: "Elsa-Brändström-Str. 15, 76228 Karlsruhe, Germany",
+    href: null,
+  },
 ];
 
 /* ─── SVG Icons ───────────────────────────────────────────────────────── */
@@ -73,7 +97,6 @@ export default function Footer() {
       {/* ══ MAIN 3-COLUMN BODY ════════════════════════════════════════ */}
       <div className="relative max-w-[1400px] mx-auto px-6 sm:px-10 lg:px-20 py-16 sm:py-20 lg:py-24">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8 lg:gap-16">
-
           {/* ── COL 1 — Brand + Contact ─────────────────────────────── */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -84,19 +107,35 @@ export default function Footer() {
           >
             {/* Wordmark */}
             <div>
-              <span
-                className="text-2xl sm:text-3xl font-black tracking-tight block mb-1"
-                style={{
-                  fontFamily: "'Space Grotesk', sans-serif",
-                  background:
-                    "linear-gradient(135deg, #00D4FF 0%, #3B82F6 60%, #818CF8 100%)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
-                }}
-              >
-                TRIFACTRON
-              </span>
+              <div className="flex items-center gap-2.5 mb-1">
+                <span
+                  className="relative flex-shrink-0 w-9 h-9 rounded-lg overflow-hidden"
+                  style={{
+                    background: "rgba(255,255,255,0.04)",
+                    border: "1px solid rgba(0,212,255,0.15)",
+                  }}
+                >
+                  <Image
+                    src="/LOGO.jpeg"
+                    alt="Trifactron logo"
+                    fill
+                    className="object-cover"
+                  />
+                </span>
+                <span
+                  className="text-2xl sm:text-3xl font-black tracking-tight block"
+                  style={{
+                    fontFamily: "'Space Grotesk', sans-serif",
+                    background:
+                      "linear-gradient(135deg, #00D4FF 0%, #3B82F6 60%, #818CF8 100%)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                  }}
+                >
+                  TRIFACTRON
+                </span>
+              </div>
               <p
                 className="text-xs text-slate-500 italic"
                 style={{ fontFamily: "'Inter', sans-serif" }}
@@ -110,9 +149,9 @@ export default function Footer() {
               {contactItems.map((item, i) => {
                 const Icon = item.icon;
                 const inner = (
-                  <li key={i} className="flex items-center gap-3 group">
+                  <div className="flex items-start gap-3 group">
                     <span
-                      className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-lg"
+                      className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-lg mt-0.5"
                       style={{
                         background: "rgba(0,212,255,0.07)",
                         border: "1px solid rgba(0,212,255,0.12)",
@@ -120,20 +159,35 @@ export default function Footer() {
                     >
                       <Icon size={13} style={{ color: "#00D4FF" }} />
                     </span>
-                    <span
-                      className="text-sm text-slate-400 group-hover:text-white transition-colors duration-200"
-                      style={{ fontFamily: "'Inter', sans-serif" }}
-                    >
-                      {item.value}
+                    <span className="flex flex-col">
+                      <span
+                        className="text-sm text-slate-400 group-hover:text-white transition-colors duration-200 leading-snug"
+                        style={{ fontFamily: "'Inter', sans-serif" }}
+                      >
+                        {item.value}
+                      </span>
+                      {item.sublabel && (
+                        <span
+                          className="text-[10px] font-semibold tracking-widest uppercase mt-0.5"
+                          style={{
+                            fontFamily: "'Space Grotesk', sans-serif",
+                            color: "rgba(0,212,255,0.5)",
+                          }}
+                        >
+                          {item.sublabel}
+                        </span>
+                      )}
                     </span>
-                  </li>
+                  </div>
                 );
-                return item.href ? (
-                  <Link href={item.href} key={i}>
-                    {inner}
-                  </Link>
-                ) : (
-                  inner
+                return (
+                  <li key={i}>
+                    {item.href ? (
+                      <Link href={item.href}>{inner}</Link>
+                    ) : (
+                      inner
+                    )}
+                  </li>
                 );
               })}
             </ul>
@@ -248,14 +302,16 @@ export default function Footer() {
               </span>
             </div>
           </motion.div>
-
         </div>
       </div>
 
       {/* ── Bottom bar ──────────────────────────────────────────────── */}
       <div
         className="relative border-t"
-        style={{ borderColor: "rgba(255,255,255,0.06)", background: "rgba(0,0,0,0.35)" }}
+        style={{
+          borderColor: "rgba(255,255,255,0.06)",
+          background: "rgba(0,0,0,0.35)",
+        }}
       >
         <div className="max-w-[1400px] mx-auto px-6 sm:px-10 lg:px-20 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p
