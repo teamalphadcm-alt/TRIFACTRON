@@ -13,7 +13,7 @@ import { Target, Eye, Award } from "lucide-react";
 // export const metadata = {
 //   title: "About Trifactron | AI Automation & Embedded Systems, Germany & Kerala",
 //   description:
-//     "Trifactron builds AI-driven industrial automation and embedded systems solutions, and delivers affordable, industry-relevant training for students in Germany and Kerala.",
+//     "Trifactron builds AI-driven industrial automation and embedded systems solutions, and delivers affordable, industry-relevant training for students in Germany and India.",
 // };
 // ---------------------------------------------------------------------------
 
