@@ -108,7 +108,7 @@ export default function AboutPage() {
             Systems and Industrial Automation to create intelligent
             manufacturing solutions that reduce downtime, improve efficiency
             and empower human decision-making. Based between Germany and
-            Kerala, we help manufacturers modernize their production lines
+            India, we help manufacturers modernize their production lines
             and help students build careers in AI-driven automation.
           </motion.p>
         </div>
