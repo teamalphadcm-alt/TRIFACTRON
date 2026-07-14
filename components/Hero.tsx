@@ -458,6 +458,10 @@ interface ProcessStep {
 
 const processSteps: ProcessStep[] = [
   {
+    title: "Requirement Analysis",
+    desc: "We audit your operations, define objectives, constraints, and success metrics, and scope the exact problem before any engineering begins.",
+  },
+  {
     title: "Sensor Integration",
     desc: "We map your existing sensor infrastructure and identify critical measurement points across your production environment.",
   },
@@ -484,6 +488,14 @@ export default function Hero() {
   const heroOpacity = useTransform(scrollY, [0, 500], [1, 0]);
   const heroY = useTransform(scrollY, [0, 500], [0, 60]);
   const [activeService, setActiveService] = useState<number>(0);
+  const [activeStep, setActiveStep] = useState<number>(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveStep((prev) => (prev + 1) % processSteps.length);
+    }, 1600);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className="bg-[#06090F] text-white" style={{ fontFamily: "'Inter', sans-serif" }}>
@@ -962,7 +974,39 @@ export default function Hero() {
               style={{ background: "linear-gradient(90deg, transparent, rgba(0,212,255,0.2), rgba(59,130,246,0.2), transparent)" }}
             />
 
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 text-center">
+            {/* Traveling ball — moves step 1 → 2 → 3 → 4 → 5, then loops */}
+            <motion.div
+              className="hidden lg:block absolute top-9 z-20 pointer-events-none"
+              style={{ marginTop: -6 }}
+              animate={{
+                left: ["10%", "10%", "30%", "30%", "50%", "50%", "70%", "70%", "90%", "90%"],
+                opacity: [0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+              }}
+              transition={{
+                duration: 8,
+                times: [0, 0.06, 0.22, 0.28, 0.44, 0.5, 0.66, 0.72, 0.88, 1],
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            >
+              <div className="relative -translate-x-1/2">
+                <div
+                  className="absolute inset-0 rounded-full blur-md"
+                  style={{ width: 20, height: 20, background: "rgba(0,212,255,0.7)" }}
+                />
+                <div
+                  className="relative rounded-full"
+                  style={{
+                    width: 12,
+                    height: 12,
+                    background: "linear-gradient(135deg, #ffffff, #00D4FF)",
+                    boxShadow: "0 0 12px rgba(0,212,255,0.9), 0 0 24px rgba(0,212,255,0.5)",
+                  }}
+                />
+              </div>
+            </motion.div>
+
+            <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-6 text-center">
               {processSteps.map((step, i) => (
                 <motion.div
                   key={i}
@@ -973,24 +1017,34 @@ export default function Hero() {
                   className="relative flex flex-col items-center text-center"
                 >
                   {/* Step number */}
-                  <div className="relative flex items-center justify-center w-[52px] h-[52px] mb-6">
+                  <motion.div
+                    className="relative flex items-center justify-center w-[52px] h-[52px] mb-6"
+                    animate={{ scale: activeStep === i ? 1.12 : 1 }}
+                    transition={{ duration: 0.4, ease: "easeOut" }}
+                  >
                     <motion.span
                       className="absolute inset-0 rounded-full"
                       style={{ border: "1px solid rgba(0,212,255,0.35)" }}
                       animate={{ scale: [1, 1.5, 1.5], opacity: [0.6, 0, 0] }}
                       transition={{ duration: 2.6, repeat: Infinity, ease: "easeOut", delay: i * 0.4 }}
                     />
-                    <div className="relative z-10 flex items-center justify-center w-full h-full rounded-full"
+                    <div
+                      className="relative z-10 flex items-center justify-center w-full h-full rounded-full transition-all duration-300"
                       style={{
-                        background: "linear-gradient(135deg, rgba(0,212,255,0.15), rgba(59,130,246,0.1))",
-                        border: "1px solid rgba(0,212,255,0.25)",
+                        background: activeStep === i
+                          ? "linear-gradient(135deg, rgba(0,212,255,0.35), rgba(59,130,246,0.25))"
+                          : "linear-gradient(135deg, rgba(0,212,255,0.15), rgba(59,130,246,0.1))",
+                        border: activeStep === i
+                          ? "1px solid rgba(0,212,255,0.8)"
+                          : "1px solid rgba(0,212,255,0.25)",
+                        boxShadow: activeStep === i ? "0 0 20px rgba(0,212,255,0.4)" : "none",
                       }}
                     >
                       <span className="font-display font-black text-base text-cyan-400">
                         {String(i + 1).padStart(2, "0")}
                       </span>
                     </div>
-                  </div>
+                  </motion.div>
                   <h3 className="font-display font-bold text-lg text-white mb-3">{step.title}</h3>
                   <p className="font-body text-sm text-slate-500 leading-relaxed">{step.desc}</p>
                 </motion.div>
@@ -998,6 +1052,7 @@ export default function Hero() {
             </div>
           </div>
         </div>
+
       </section>
 
       {/* ── CTA BANNER ────────────────────────────────────────── */}
