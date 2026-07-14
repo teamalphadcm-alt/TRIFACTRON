@@ -2,7 +2,7 @@
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, ArrowUpRight, Cpu, BrainCircuit, Factory, Zap, Shield, TrendingUp, Activity, Bot, Cog, MessageCircle, Clock, Layers, CheckCircle2, LucideIcon } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Cpu, BrainCircuit, Factory, Zap, Shield, TrendingUp, Activity, Bot, Cog, MessageCircle, LucideIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 /* ─── Neural Node Canvas ──────────────────────────────────────────────── */
@@ -475,49 +475,6 @@ const processSteps: ProcessStep[] = [
   },
 ];
 
-interface CaseStudy {
-  icon: LucideIcon;
-  client: string;
-  industry: string;
-  challenge: string;
-  solution: string;
-  result: string;
-  metricValue: number;
-  metricSuffix: string;
-  metricLabel: string;
-}
-
-const caseStudies: CaseStudy[] = [
-  {
-    icon: Layers,
-    client: "E-trnl Energy Pvt Ltd",
-    industry: "Battery Cell Manufacturing",
-    challenge:
-      "Every product variant on the cell line meant hours of manual machine reconfiguration — operators re-tuning parameters by hand, production idle the whole time.",
-    solution:
-      "We engineered an automated reconfiguration system that reads the target product profile and re-tunes the line's machine parameters in place, removing the manual setup step entirely.",
-    result:
-      "Changeovers that used to eat into a shift now happen in a fraction of the time, freeing up capacity for more product runs per week.",
-    metricValue: 70,
-    metricSuffix: "%",
-    metricLabel: "Faster Changeovers",
-  },
-  {
-    icon: Cpu,
-    client: "Bharat FIH",
-    industry: "Electronics Manufacturing",
-    challenge:
-      "Across a fleet of 10,000+ machines, maintenance was purely reactive — teams fixing breakdowns after they happened, with downtime and repair costs piling up.",
-    solution:
-      "We deployed condition-monitoring and predictive-maintenance models across the fleet, flagging at-risk machines before failure instead of after.",
-    result:
-      "The shift from reactive to predictive maintenance cut unplanned downtime and brought maintenance spend down across the fleet.",
-    metricValue: 10000,
-    metricSuffix: "+",
-    metricLabel: "Machines Monitored",
-  },
-];
-
 const clients: string[] = [
   "Siemens", "Bosch", "ABB", "Schneider Electric", "Rockwell", "Honeywell"
 ];
@@ -579,15 +536,6 @@ export default function Hero() {
         .seo-card:hover .seo-card-bar {
           background: linear-gradient(90deg, #FFD84D, #FFB800) !important;
           box-shadow: 0 0 12px rgba(255, 200, 0, 0.5);
-        }
-
-        .case-card {
-          transition: border-color 0.35s ease, box-shadow 0.35s ease, background 0.35s ease, transform 0.35s ease;
-        }
-        .case-card:hover {
-          border-color: rgba(0, 212, 255, 0.4) !important;
-          box-shadow: 0 0 50px rgba(0, 212, 255, 0.12), 0 24px 50px rgba(0,0,0,0.4) !important;
-          transform: translateY(-6px);
         }
       `}</style>
 
@@ -951,7 +899,6 @@ export default function Hero() {
         </div>
       </section>
 
-
       {/* ── PROCESS ───────────────────────────────────────────── */}
       <section className="py-24 lg:py-36 relative overflow-hidden">
         <div className="hidden md:block absolute top-10 left-[4%] opacity-70">
@@ -1005,7 +952,6 @@ export default function Hero() {
                 playsInline
                 className="w-full h-auto block"
               />
-           
             </div>
           </motion.div>
 
@@ -1050,126 +996,6 @@ export default function Hero() {
                 </motion.div>
               ))}
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── CASE STUDIES ──────────────────────────────────────── */}
-      <section className="py-24 lg:py-36 relative overflow-hidden border-t border-white/6">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-1/3 right-0 w-96 h-96 rounded-full bg-cyan-500/4 blur-[110px]" />
-        </div>
-
-        <div className="relative max-w-[1400px] mx-auto px-6 md:px-10 lg:px-16">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.6 }}
-            className="mb-16 lg:mb-20 flex flex-col items-center"
-            style={{ width: "100%", maxWidth: "640px", margin: "0 auto", textAlign: "center" }}
-          >
-            <div className="inline-flex items-center gap-2 rounded-full border border-cyan-400/20 bg-cyan-400/5 px-3.5 py-1.5 mb-5">
-              <span className="text-xs font-display font-semibold text-cyan-400 tracking-widest uppercase">Proven In Production</span>
-            </div>
-            <h2 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black leading-[1.1] tracking-tight text-white" style={{ textAlign: "center", width: "100%" }}>
-              Results That Show Up
-              <span
-                className="block"
-                style={{
-                  background: "linear-gradient(135deg, #00D4FF, #3B82F6)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
-                }}
-              >
-                On The Factory Floor
-              </span>
-            </h2>
-            <p className="mt-5 text-slate-400 font-body text-sm sm:text-base lg:text-lg leading-relaxed">
-              No demos, no simulations — these are live deployments running on real production lines.
-            </p>
-          </motion.div>
-
-          <div className="grid lg:grid-cols-2 gap-6 lg:gap-8">
-            {caseStudies.map((cs, i) => {
-              const Icon = cs.icon;
-              return (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-60px" }}
-                  transition={{ duration: 0.5, delay: i * 0.12 }}
-                  className="case-card relative rounded-2xl p-7 sm:p-9 flex flex-col items-center text-center"
-                  style={{
-                    background: "linear-gradient(135deg, rgba(13,21,32,0.75) 0%, rgba(6,9,15,0.9) 100%)",
-                    border: "1px solid rgba(255,255,255,0.07)",
-                  }}
-                >
-                  {/* Icon + client identity */}
-                  <div
-                    className="flex items-center justify-center rounded-xl mb-6"
-                    style={{
-                      width: 56,
-                      height: 56,
-                      background: "linear-gradient(135deg, rgba(0,212,255,0.15), rgba(59,130,246,0.1))",
-                      border: "1px solid rgba(0,212,255,0.25)",
-                    }}
-                  >
-                    <Icon size={26} className="text-cyan-300" />
-                  </div>
-
-                  <span className="text-xs font-display font-semibold tracking-widest text-cyan-400/70 uppercase mb-2">
-                    {cs.industry}
-                  </span>
-                  <h3 className="font-display font-bold text-xl sm:text-2xl text-white mb-6">
-                    {cs.client}
-                  </h3>
-
-                  {/* Big metric */}
-                  <div
-                    className="flex flex-col items-center justify-center rounded-2xl py-6 px-8 mb-7"
-                    style={{
-                      background: "rgba(0,212,255,0.06)",
-                      border: "1px solid rgba(0,212,255,0.18)",
-                    }}
-                  >
-                    <div className="font-display text-4xl sm:text-5xl font-black text-cyan-300">
-                      <Counter to={cs.metricValue} suffix={cs.metricSuffix} />
-                    </div>
-                    <div className="mt-2 text-xs font-display font-semibold tracking-widest text-slate-400 uppercase">
-                      {cs.metricLabel}
-                    </div>
-                  </div>
-
-                  {/* Challenge / Solution / Result */}
-                  <div className="w-full flex flex-col gap-5 text-left">
-                    <div>
-                      <div className="flex items-center gap-2 mb-1.5 justify-center">
-                        <Clock size={13} className="text-slate-500" />
-                        <span className="text-[11px] font-display font-bold tracking-widest text-slate-500 uppercase">Challenge</span>
-                      </div>
-                      <p className="font-body text-sm text-slate-400 leading-relaxed text-center">{cs.challenge}</p>
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2 mb-1.5 justify-center">
-                        <Cog size={13} className="text-slate-500" />
-                        <span className="text-[11px] font-display font-bold tracking-widest text-slate-500 uppercase">What We Did</span>
-                      </div>
-                      <p className="font-body text-sm text-slate-400 leading-relaxed text-center">{cs.solution}</p>
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2 mb-1.5 justify-center">
-                        <CheckCircle2 size={13} className="text-emerald-400" />
-                        <span className="text-[11px] font-display font-bold tracking-widest text-emerald-400/80 uppercase">Result</span>
-                      </div>
-                      <p className="font-body text-sm text-slate-300 leading-relaxed text-center">{cs.result}</p>
-                    </div>
-                  </div>
-                </motion.div>
-              );
-            })}
           </div>
         </div>
       </section>
