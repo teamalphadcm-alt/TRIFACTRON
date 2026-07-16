@@ -1155,7 +1155,7 @@ export default function Hero() {
               },
               {
                 title: "Industry 4.0 to Industry 5.0: The Transition",
-                body: "Industry 4.0 connected machines to data. Industry 5.0 puts humans back at the center of that data-driven factory — collaborative robots, adaptive workflows, and AI systems designed to support operators rather than replace them. Our curriculum walks students through this shift step by step, from IIoT basics through to human-centric automation design.",
+                body: "Industry 4.0 connected machines to data. Collaborative robots, adaptive workflows, and AI systems designed to support operators rather than replace them. Our curriculum walks students through this shift step by step, from IIoT basics through to human-centric automation design.",
               },
               {
                 title: "Training for Students in Germany & Kerala",
