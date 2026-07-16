@@ -7,9 +7,7 @@ export const metadata: Metadata = {
   title: "Trifactron | AI Powered Industrial Automation",
   description: "Where Machines Predict and Humans Decide",
   icons: {
-    icon: "/LOGO.jpeg",
-    shortcut: "/LOGO.jpeg",
-    apple: "/LOGO.jpeg",
+    icon: "/favicon.ico",
   },
 };
 
