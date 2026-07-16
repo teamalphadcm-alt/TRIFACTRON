@@ -804,38 +804,6 @@ export default function ContactPage() {
             ))}
           </div>
 
-          <div style={{ textAlign: "center", marginTop: 40 }}>
-            <a
-              href="/support"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 8,
-                padding: "13px 28px",
-                borderRadius: 999,
-                background: `linear-gradient(135deg, ${CYAN} 0%, ${BLUE} 100%)`,
-                color: "#fff",
-                fontWeight: 700,
-                fontSize: 15,
-                textDecoration: "none",
-                transition: "transform 0.2s, box-shadow 0.2s",
-                boxShadow: "0 4px 20px rgba(34,211,238,0.25)",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = "translateY(-2px)";
-                e.currentTarget.style.boxShadow = "0 10px 32px rgba(34,211,238,0.35)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = "none";
-                e.currentTarget.style.boxShadow = "0 4px 20px rgba(34,211,238,0.25)";
-              }}
-            >
-              Still have questions?
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                <path d="M5 12h14M13 6l6 6-6 6" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </a>
-          </div>
         </FadeIn>
 
       </div>
