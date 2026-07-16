@@ -7,6 +7,9 @@ import { useState, useEffect, useRef, ReactNode, CSSProperties, FormEvent } from
 const CYAN = "#22d3ee";
 const BLUE = "#3b82f6";
 
+// WhatsApp number (Germany office) — country code + number, digits only, no +/spaces
+const WHATSAPP_NUMBER = "4915511049025";
+
 // ─── Types ───────────────────────────────────────────────────────────────────
 
 interface Office {
@@ -88,8 +91,8 @@ const OFFICES: Office[] = [
     country: "India",
     city: "Shoranur, Kerala",
     address: "Kulapully, Shoranur, Kerala 679 121",
-    email: "india@trifactron.com",
-    phone: "+91 98XXX XXXXX",
+    email: "info@trifactron.com",
+    phone: "+91 89439 58370",
     accent: "rgba(34,211,238,0.12)",
   },
   {
@@ -97,21 +100,21 @@ const OFFICES: Office[] = [
     country: "Germany",
     city: "Karlsruhe",
     address: "Elsa-Brändström-Str. 15, 76137 Karlsruhe",
-    email: "germany@trifactron.com",
-    phone: "+49 721 XXX XXXX",
+    email: "info@trifactron.com",
+    phone: "+49 15511 049025",
     accent: "rgba(59,130,246,0.12)",
   },
 ];
 
 const STATS: Stat[] = [
-  { icon: "👥", label: "Clients",      value: "500+"      },
+  { icon: "👥", label: "Clients",      value: "10+"       },
   { icon: "🏭", label: "Industry 4.0", value: "Certified" },
-  { icon: "🌍", label: "Countries",    value: "12+"       },
+  { icon: "🌍", label: "Countries",    value: "2"         },
   { icon: "⚡", label: "Uptime SLA",   value: "99.9%"     },
 ];
 
 const FAQ: FaqItem[] = [
-  { q: "Deployment time",   a: "2–4 weeks"       },
+  { q: "Deployment time",   a: "On-time delivery" },
   { q: "PLC compatibility", a: "Full integration" },
   { q: "Team training",     a: "Included"        },
   { q: "Annual support",    a: "Available"       },
@@ -560,10 +563,26 @@ export default function ContactPage() {
     e.preventDefault();
     if (!validate()) return;
     setSending(true);
+
+    const lines = [
+      `New contact form submission:`,
+      ``,
+      `Name: ${form.name}`,
+      `Email: ${form.email}`,
+      form.phone ? `Phone: ${form.phone}` : null,
+      form.company ? `Company: ${form.company}` : null,
+      ``,
+      `Message: ${form.message}`,
+    ].filter(Boolean);
+
+    const text = encodeURIComponent(lines.join("\n"));
+    const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${text}`;
+
     setTimeout(() => {
       setSending(false);
       setSent(true);
-    }, 1800);
+      window.open(waUrl, "_blank");
+    }, 800);
   };
 
   return (
