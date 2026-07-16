@@ -4,7 +4,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
-import { motion } from "framer-motion";
 
 const links = [
   { name: "Home", href: "/" },
@@ -45,15 +44,6 @@ export default function Navbar() {
               {item.name}
             </Link>
           ))}
-
-          <motion.a
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            href="/contact"
-            className="bg-indigo-900 hover:bg-indigo-950 px-5 py-3 rounded-lg font-semibold transition"
-          >
-            Join Now
-          </motion.a>
         </nav>
 
         <button
