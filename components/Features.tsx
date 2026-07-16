@@ -27,7 +27,7 @@ const features = [
     icon: Factory,
     title: "Industry 5.0",
     description:
-      "Human-centric automation that combines intelligent machines with skilled operators.",
+      "AI-centric automation that combines intelligent machines with skilled operators.",
   },
   {
     icon: Activity,
