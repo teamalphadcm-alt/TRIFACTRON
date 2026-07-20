@@ -124,16 +124,10 @@ export default function Footer() {
                 </span>
                 <span
                   className="text-2xl sm:text-3xl font-black tracking-tight block"
-                  style={{
-                    fontFamily: "'Space Grotesk', sans-serif",
-                    background:
-                      "linear-gradient(135deg, #00D4FF 0%, #3B82F6 60%, #818CF8 100%)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    backgroundClip: "text",
-                  }}
+                  style={{ fontFamily: "'Space Grotesk', sans-serif" }}
                 >
-                  TRIFACTRON
+                  <span style={{ color: "#FFFFFF" }}>TRI</span>
+                  <span style={{ color: "#00D4FF" }}>FACTRON</span>
                 </span>
               </div>
               <p
