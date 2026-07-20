@@ -53,6 +53,7 @@ const C = {
 };
 
 const WHATSAPP_NUMBER = "4915511049025"; // +49 15511049025
+const BROCHURE_URL = "https://drive.google.com/file/d/1tPCMz1fgg-_PDaYw2G_VDBCHSZsGNsXM/view?usp=sharing";
 
 // ─── Hook: InView ─────────────────────────────────────────────────────────────
 
@@ -300,17 +301,10 @@ interface TrainingProgram {
 
 const TRAINING: TrainingProgram[] = [
   {
-    title: "PLC Programming",
-    duration: "40 Hours",
-    modules: ["IEC 61131-3 Languages", "Siemens TIA Portal", "Allen-Bradley Studio 5000", "Motion & Safety PLCs", "HMI Integration", "Fieldbus Protocols"],
-    image: "https://images.unsplash.com/photo-1565688534245-05d6b5be184a?w=800&q=80",
-    level: "Beginner → Advanced",
-  },
-  {
     title: "Embedded Systems — Basic Course",
     duration: "3 Months",
     modules: [
-      "Microcontroller Fundamentals & Digital Logic",
+      "Microcontroller & Digital Logic Basics",
       "Arduino Sensor & Motor Interfacing",
       "Bluetooth-Controlled Robotics (HC-05)",
       "ESP32 Wi-Fi, BLE & IoT (HTTP/MQTT)",
@@ -337,11 +331,34 @@ const TRAINING: TrainingProgram[] = [
     includes: "8051 · ARM7 (LPC2148) · Embedded C",
   },
   {
-    title: "Industry 4.0 Masterclass",
-    duration: "24 Hours",
-    modules: ["Digital Twin Concepts", "OPC-UA Architecture", "Cloud SCADA (AWS/Azure)", "Cybersecurity for OT", "Data Analytics with Python", "AI Model Deployment"],
+    title: "Industrial Automation — Beginner to Intermediate",
+    duration: "40 Hours",
+    modules: [
+      "Electrical & Control Circuit Fundamentals",
+      "Industrial Sensors, Pneumatics & Motors",
+      "Schneider Zelio PLC & Ladder Logic",
+      "Delta PLC (WPLSoft) Programming",
+      "7 Hands-on Industrial Projects",
+      "Practical Troubleshooting & Debugging",
+    ],
+    image: "https://images.unsplash.com/photo-1565688534245-05d6b5be184a?w=800&q=80",
+    level: "Beginner to Intermediate",
+    includes: "Schneider Zelio · Delta PLC",
+  },
+  {
+    title: "Industrial Automation — Intermediate to Advanced",
+    duration: "Advanced Level",
+    modules: [
+      "Mitsubishi PLC (GX Works3) & HMI (GT Designer3)",
+      "Siemens PLC (TIA Portal) Programming",
+      "Allen-Bradley PLC (Studio 5000 / RSLogix)",
+      "Motion Control: Servo, Stepper & Encoders",
+      "Industrial Communication (Modbus, PROFINET)",
+      "Multi-Vendor Industrial Projects",
+    ],
     image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
-    level: "Professional",
+    level: "Intermediate to Advanced",
+    includes: "Mitsubishi · Siemens · Allen-Bradley",
   },
 ];
 
@@ -1051,7 +1068,9 @@ export default function ServicesPage() {
 
           <FadeIn dir="up" delay={300}>
             <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
-              <button style={{
+              <button
+                onClick={() => document.getElementById("services")?.scrollIntoView({ behavior: "smooth", block: "start" })}
+                style={{
                 height: 54, padding: "0 32px", borderRadius: 14, border: "none",
                 background: `linear-gradient(135deg, ${C.cyan}, ${C.blue})`,
                 color: "#fff", fontSize: 15, fontWeight: 700, cursor: "pointer",
@@ -1065,19 +1084,6 @@ export default function ServicesPage() {
               >
                 Explore Services <ArrowRight size={17} />
               </button>
-              <button style={{
-                height: 54, padding: "0 32px", borderRadius: 14,
-                border: "1px solid rgba(255,255,255,0.15)",
-                background: "rgba(255,255,255,0.04)",
-                color: "#f1f5f9", fontSize: 15, fontWeight: 600, cursor: "pointer",
-                fontFamily: "inherit",
-                transition: "border-color 0.2s, background 0.2s",
-              }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(34,211,238,0.5)"; (e.currentTarget as HTMLElement).style.background = "rgba(34,211,238,0.06)"; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.15)"; (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.04)"; }}
-              >
-                View Case Studies
-              </button>
             </div>
           </FadeIn>
 
@@ -1088,9 +1094,9 @@ export default function ServicesPage() {
               borderTop: "1px solid rgba(255,255,255,0.08)",
               display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(130px,1fr))", gap: 32,
             }}>
-              <StatCard value={500}  suffix="+"  label="Clients served"       delay={0}   />
-              <StatCard value={99}   suffix="%"  label="On-time delivery"      delay={100} />
-              <StatCard value={12}   suffix="+"  label="Countries"             delay={200} />
+              <StatCard value={15}   suffix="+"  label="Clients served"       delay={0}   />
+              <StatCard value={98}   suffix="%"  label="On-time delivery"      delay={100} />
+              <StatCard value={2}    suffix="+"  label="Countries"             delay={200} />
               <StatCard value={40}   suffix="h"  label="Training hours"        delay={300} />
               <StatCard value={8}    suffix="+"  label="Years experience"      delay={400} />
             </div>
@@ -1101,7 +1107,7 @@ export default function ServicesPage() {
       {/* ══════════════════════════════════════════════════════════════
           SERVICES GRID
       ══════════════════════════════════════════════════════════════ */}
-      <section style={{ padding: "120px 0", background: `linear-gradient(180deg, ${C.slate950} 0%, #0a1628 50%, ${C.slate950} 100%)`, position: "relative" }}>
+      <section id="services" style={{ padding: "120px 0", background: `linear-gradient(180deg, ${C.slate950} 0%, #0a1628 50%, ${C.slate950} 100%)`, position: "relative" }}>
         {/* Subtle grid overlay */}
         <div style={{
           position: "absolute", inset: 0, pointerEvents: "none",
@@ -1358,7 +1364,13 @@ export default function ServicesPage() {
             </p>
           </FadeIn>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%,340px),1fr))", gap: 28 }}>
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(420px,1fr))",
+            gap: 28,
+            maxWidth: 1000,
+            margin: "0 auto",
+          }}>
             {TRAINING.map((p, i) => <TrainingCard key={p.title} program={p} index={i} onEnrol={setEnrolProgram} />)}
           </div>
 
@@ -1372,7 +1384,7 @@ export default function ServicesPage() {
             }}>
               {[
                 { Icon: Users,        label: "Small cohorts",        sub: "Max 12 per batch"          },
-                { Icon: Award,        label: "Certified instructors", sub: "10+ years field experience" },
+                { Icon: Award,        label: "Certified instructors", sub: "5+ years field experience" },
                 { Icon: CheckCircle2, label: "Certificate issued",    sub: "Industry-recognised"       },
                 { Icon: Clock,        label: "Flexible schedule",     sub: "Weekday & weekend batches"  },
               ].map(({ Icon, label, sub }) => (
@@ -1472,7 +1484,12 @@ export default function ServicesPage() {
                   Book a free 30-minute engineering consultation. We'll assess your current setup and outline a concrete roadmap — no sales pressure, no jargon.
                 </p>
                 <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
-                  <button style={{
+                  <button
+                    onClick={() => {
+                      const message = "Hi! I'd like to book a free 30-minute engineering consultation.";
+                      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
+                    }}
+                    style={{
                     height: 58, padding: "0 40px", borderRadius: 16, border: "none",
                     background: `linear-gradient(135deg, ${C.cyan}, ${C.blue})`,
                     color: "#fff", fontSize: 16, fontWeight: 800, cursor: "pointer",
@@ -1487,19 +1504,25 @@ export default function ServicesPage() {
                   >
                     Book Free Consultation <ArrowRight size={18} />
                   </button>
-                  <button style={{
+                  <a
+                    href={BROCHURE_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
                     height: 58, padding: "0 36px", borderRadius: 16,
                     border: "1px solid rgba(255,255,255,0.2)",
                     background: "rgba(255,255,255,0.05)",
                     color: "#f1f5f9", fontSize: 16, fontWeight: 700, cursor: "pointer",
                     fontFamily: "inherit",
                     transition: "border-color 0.2s, background 0.2s",
+                    display: "inline-flex", alignItems: "center", justifyContent: "center",
+                    textDecoration: "none",
                   }}
                   onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(34,211,238,0.5)"; (e.currentTarget as HTMLElement).style.background = "rgba(34,211,238,0.07)"; }}
                   onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.2)"; (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.05)"; }}
                   >
                     Download Brochure
-                  </button>
+                  </a>
                 </div>
               </div>
             </div>
