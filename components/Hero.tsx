@@ -636,50 +636,6 @@ export default function Hero() {
               and industrial automation systems for manufacturers who cannot
               afford failure. From sensor to decision — fully integrated.
             </motion.p>
-
-            {/* CTA Row */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="mt-10 flex flex-wrap gap-4 justify-center"
-            >
-              <Link
-                href="/services"
-                className="group flex items-center gap-2.5 rounded-xl font-display font-semibold text-sm px-7 py-4 bg-cyan-400 text-slate-950 hover:bg-white transition-all duration-200"
-              >
-                Explore Platform
-                <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform duration-200" />
-              </Link>
-              <Link
-                href="/contact"
-                className="group flex items-center gap-2 rounded-xl border border-white/15 px-7 py-4 text-sm font-display font-semibold text-slate-200 hover:border-cyan-400/40 hover:bg-cyan-400/5 transition-all duration-200"
-              >
-                Book a Demo
-                <ArrowUpRight size={14} className="opacity-60 group-hover:opacity-100 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-transform duration-200" />
-              </Link>
-            </motion.div>
-
-            {/* Stat strip */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
-              className="mt-14 pt-8 border-t border-white/8 grid grid-cols-3 gap-4 sm:gap-6 w-full max-w-md mx-auto"
-            >
-              {[
-                { n: 12, s: "+", l: "Deployments" },
-                { n: 98, s: "%", l: "Uptime SLA" },
-               
-              ].map((item, i) => (
-                <div key={i} className="text-center">
-                  <div className="font-display text-xl sm:text-2xl md:text-3xl font-black text-white">
-                    <Counter to={item.n} suffix={item.s} />
-                  </div>
-                  <div className="mt-1 text-[10px] sm:text-xs text-slate-500 font-body tracking-wide">{item.l}</div>
-                </div>
-              ))}
-            </motion.div>
           </div>
 
           {/* Right column — Neural Visualization */}
@@ -890,13 +846,6 @@ export default function Hero() {
                   <p className="font-body text-sm text-slate-500 leading-relaxed group-hover:text-slate-400 transition-colors duration-300">
                     {svc.desc}
                   </p>
-                  <div
-                    className="mt-6 flex items-center justify-center gap-2 text-xs font-display font-semibold tracking-wide transition-all duration-300"
-                    style={{ color: activeService === i ? "#00D4FF" : "#334155" }}
-                  >
-                    Learn more
-                    <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform duration-200" />
-                  </div>
                 </motion.div>
               );
             })}
