@@ -1045,12 +1045,6 @@ export default function Hero() {
                 Schedule Engineering Call
                 <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
               </Link>
-              <Link
-                href="/case-studies"
-                className="rounded-xl border border-white/12 px-8 py-4 text-sm font-display font-semibold text-slate-300 hover:border-white/25 hover:bg-white/5 transition-all duration-200"
-              >
-                View Case Studies
-              </Link>
             </div>
           </div>
         </motion.div>
