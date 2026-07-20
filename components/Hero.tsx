@@ -1158,9 +1158,9 @@ export default function Hero() {
                 body: "Industry 4.0 connected machines to data. Collaborative robots, adaptive workflows, and AI systems designed to support operators rather than replace them. Our curriculum walks students through this shift step by step, from IIoT basics through to human-centric automation design.",
               },
               {
-                title: "Training for Students in Germany & Kerala",
-                body: "Engineering and technical students in Germany get access to German-standard industrial training — practical, compliance-aware, and aligned with what local manufacturers look for in graduates and working students. For students in Kerala, the same German-engineered curriculum is delivered online at a fraction of the cost of studying abroad — no relocation required, mentorship from engineers with real industrial project experience, and a certificate that speaks to international standards.",
-              },
+  title: "Global Industrial Training Programs",
+  body: "Designed for aspiring engineers and technical professionals worldwide, our German-standard training combines practical learning, real industrial case studies, and expert mentorship. Accessible from anywhere, the program equips students with industry-ready skills in automation, embedded systems, robotics, and Industry 4.0 technologies, backed by internationally aligned certification.",
+},
               {
                 title: "Affordable Online Courses",
                 body: "Studying AI automation and embedded systems shouldn't require an expensive campus or relocation. Our courses are live and self-paced, project-based, and priced for students — among the most affordable AI automation and embedded systems courses available online, with instalment options and student discounts. Every course ends in a deployable mini-project and a completion certificate recognized for internships and entry-level industrial roles.",
