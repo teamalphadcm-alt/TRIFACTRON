@@ -51,7 +51,7 @@ const founders = [
     ],
   },
   {
-    name: "Anakha S",
+    name: "Anakha Subramanian",
     role: "Co-Founder • Embedded Systems Engineer",
     image: "/Anakha.jpeg",
     reverse: true,
